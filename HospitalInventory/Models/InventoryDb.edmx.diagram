@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="1489db48f59b4e3a951fcefbece63fe6" Name="Diagram1">
+        <EntityTypeShape EntityType="HospitalInventoryModel.Employee" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="HospitalInventoryModel.EmployeeDesignation" Width="1.5" PointX="0.75" PointY="1.375" IsExpanded="true" />
+        <AssociationConnector Association="HospitalInventoryModel.FK_Employee_EmployeeDesignation" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="HospitalInventoryModel.Equipment" Width="1.5" PointX="5.25" PointY="5" />
+        <EntityTypeShape EntityType="HospitalInventoryModel.EquipmentCategory" Width="1.5" PointX="3" PointY="8.5" />
+        <EntityTypeShape EntityType="HospitalInventoryModel.Feedback" Width="1.5" PointX="7.5" PointY="5.5" />
+        <EntityTypeShape EntityType="HospitalInventoryModel.Patient" Width="1.5" PointX="3" PointY="5.5" />
+        <EntityTypeShape EntityType="HospitalInventoryModel.PatientCategory" Width="1.5" PointX="0.75" PointY="5.625" />
+        <AssociationConnector Association="HospitalInventoryModel.FK_Equipment_EquipmentCategory" />
+        <AssociationConnector Association="HospitalInventoryModel.FK_Equipment_Patient" />
+        <AssociationConnector Association="HospitalInventoryModel.FK_Feedback_Equipment" />
+        <AssociationConnector Association="HospitalInventoryModel.FK_Patient_PatientCategory" />
+        <AssociationConnector Association="HospitalInventoryModel.FK_Patient_Employee" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

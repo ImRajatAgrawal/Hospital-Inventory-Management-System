@@ -1,0 +1,50 @@
+﻿@model HospitalInventory.Models.EquipmentCategory
+
+@{
+    ViewBag.Title = "Details";
+    if (Session["userID"] == null)
+    {
+        Response.Redirect("~/Login/LoginPage");
+    }
+    else if (Session["userRole"].Equals("Staff"))
+    {
+        Response.Redirect("~/Home/ErrorPage");
+    }
+}
+
+<h2>Details of Equipment Categories</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Equipment Category Name
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EquipmentCategoryName)
+        </dd>
+
+        <dt>
+            Equipment Category Is Reusable
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EquipmentCategoryIsReusable)
+        </dd>
+
+        <dt>
+            Equipment Category Threshold
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EquipmentCategoryThreshold)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.EquipmentCategoryId }) |
+    @Html.ActionLink("Back to List", "Index") |
+    @Html.ActionLink("More Details", "Index", new { Controller = "Equipments", searchBy = "EquipmentCategoryName", search = Model.EquipmentCategoryName })
+</p>

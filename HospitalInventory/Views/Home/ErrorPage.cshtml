@@ -1,0 +1,15 @@
+﻿
+@{
+    ViewBag.Title = "ErrorPage";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    if (Session["userID"] == null)
+    {
+        Response.Redirect("~/Login/Index");
+    }
+
+}
+
+<h2>ErrorPage</h2>
+<h3>@ViewBag.Message</h3>
+
+
