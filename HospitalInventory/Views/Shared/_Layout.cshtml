@@ -1,0 +1,130 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Hospital Inventory Management System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <style>
+        .dropbtn {
+            border: none;
+            outline: none;
+            color: white;
+            padding: 14px 16px;
+            background-color: inherit;
+            font-family: inherit;
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <i class="navbar-brand"><span class="fa fa-hospital-o"></span></i>
+                @Html.ActionLink("Hospital Inventory Management System", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    @if (Session["userID"] != null)
+                    {
+
+
+
+                        if (Session["userRole"].Equals("Admin"))
+                        {
+                            <li>
+                                <a href="@Url.Action("Admin", "Home")">
+                                    Administrator Menu
+                                </a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("Manager", "Home")">
+                                    Equipment Manager Menu
+                                </a>
+                            </li>
+
+                        }
+
+                        else if (Session["userRole"].Equals("Manager"))
+                        {
+                            <li>
+                                <a href="@Url.Action("Manager", "Home")">
+                                    Equipment Manager Menu
+                                </a>
+                            </li>
+                        }
+                        <li>
+                            <a href="@Url.Action("Staff", "Home")">
+                                Hospital Staff Menu
+                            </a>
+                        </li>
+                        <li class="dropdown">
+                            <button type="button" class="dropbtn" data-toggle="dropdown">
+                                <i>Hello</i> @Session["employeeName"] (@Session["userRole"])
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li>
+                                    <a href="#">
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                        Change Password
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="@Url.Action("Logout", "Login")">
+                                        <span class="glyphicon glyphicon-log-out"></span> Logout
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+
+                        @*<li>
+                                <a href="@Url.Action("Logout", "Login")">
+                                    <span class="glyphicon glyphicon-log-out"></span>
+                                    Logout
+                                </a>
+                            </li>*@
+                        @*<li>
+                                <a href="@Url.Action("ChangePassword", "Login")">
+                                    <span class="glyphicon glyphicon-pencil"></span>
+                                    Change Password
+                                </a>
+                            </li>*@
+
+                    }
+                    else
+                    {
+                        <li>
+                            <a href="@Url.Action("LoginPage", "Login")">
+                                <span class="glyphicon glyphicon-log-in"></span>
+                                Login
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - Hospital Inventory Management System</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

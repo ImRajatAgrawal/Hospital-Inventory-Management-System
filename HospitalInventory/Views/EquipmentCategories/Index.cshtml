@@ -1,0 +1,58 @@
+﻿@model IEnumerable<HospitalInventory.Models.EquipmentCategory>
+
+@{
+    ViewBag.Title = "Index";
+    if (Session["userID"] == null)
+    {
+        Response.Redirect("~/Login/LoginPage");
+    }
+    else if (Session["userRole"].Equals("Staff"))
+    {
+        Response.Redirect("~/Home/ErrorPage");
+    }
+}
+
+<h2>Equipment Categories List</h2>
+
+<p>
+    @Html.ActionLink("Create New Equipment Category", "Create")
+</p>
+<a href="equipments" title="Manage_Equipments" style="font-size:medium">Manage Equipments</a>
+<table class="table">
+    <tr>
+        <th style="text-align: center">
+            Equipment Category Name
+        </th>
+        <th style="text-align: center">
+            Equipment Category Is Reusable
+        </th>
+        <th style="text-align: center">
+            Equipment Category Threshold
+        </th>
+        <th style="text-align: center"></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr style="text-align: center">
+            <td>
+                @Html.DisplayFor(modelItem => item.EquipmentCategoryName)
+            </td>
+            <td style="font-weight:bold">
+                @Html.DisplayFor(modelItem => item.EquipmentCategoryIsReusable)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EquipmentCategoryThreshold)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.EquipmentCategoryId }) |
+                @Html.ActionLink("Details", "Details", new { id = item.EquipmentCategoryId }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.EquipmentCategoryId })
+            </td>
+        </tr>
+    }
+
+</table>
+<p>
+    @Html.ActionLink("Go to Equipment Category List", "Index")
+</p>

@@ -1,0 +1,151 @@
+﻿@model IEnumerable<HospitalInventory.Models.Equipment>
+
+@{
+    ViewBag.Title = "Index";
+    if (Session["userID"] == null)
+    {
+        Response.Redirect("~/Login/LoginPage");
+    }
+    else if (Session["userRole"].Equals("Staff"))
+    {
+        Response.Redirect("~/Home/ErrorPage");
+    }
+}
+
+<h2>Equipment List</h2>
+
+<p>
+    @Html.ActionLink("Create New Equipment", "Create")
+</p>
+
+<br />
+<table>
+    <tr>
+        <td>
+            <!-- to redirect to Equipment Categories list -->
+            <a href="equipmentcategories" title="Manage_EquipmentCategories" style="font-size:medium">Manage Equipment Categories</a>
+        </td>
+        <td>
+            <p style="background-color: lightgreen; margin-left:500px; width: 150px; text-align:center">AVAILABLE</p>
+        </td>
+        <td>
+            <p style="background-color: lightcoral; margin-left:50px; width: 150px; text-align:center">NOT AVAILABLE</p>
+        </td>
+    </tr>
+</table>
+<hr style="border-color: black" />
+@*to search equipment*@
+@using (Html.BeginForm("Index", "Equipments", FormMethod.Get))
+{
+    <div class="form-horizontal">
+        <div class="form-group">
+            <label class="col-md-10">Search By:</label>
+            <div class="col-md-10">
+                @Html.RadioButton("searchBy", "EquipmentName", true)
+                <text>Equipment Name</text>
+                <br />
+                @Html.RadioButton("searchBy", "EquipmentCategoryName")
+                <text>Equipment Category Name</text>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-6">
+            <input type="text" name="Search" class="form-control" placeholder="Enter the search string" style="max-width:100%;" />
+        </div>
+        <div class="col-md-2">
+            <input type="submit" value="Search" />
+        </div>
+    </div>
+}
+<br />
+<hr style="border-color: black">
+@*when the string does not match any of rows*@
+@if (Model.Count() == 0)
+{
+
+    string pattern = @"!@#$%^&*()-=*/+[]{};:<>?/.,";
+    string st = ViewBag.SearchString;
+    //if the string is having special character as input and that's why it didn't match
+    if (pattern.Contains(st.Substring(0, 1)))
+    {
+        <h5>Your Search - <b>@ViewBag.SearchString</b> for search category <b>@ViewBag.SearchByString</b> did not match any rows</h5>
+        <h5>You have Entered special character where alphabets expected make sure you are entering only alphabets</h5>
+    }
+    else
+    {
+        int i = 0;
+        bool res = int.TryParse(st, out i);
+        //if the string is having number as input and that's why it didn't match
+
+        if (res == true)
+        {
+            <h5>Your Search - <b>@ViewBag.SearchString</b> for search category <b>@ViewBag.SearchByString</b> did not match any rows</h5>
+            <h5>You have Entered a number where alphabets were expected make sure you are entering only alphabets</h5>
+        }
+        //if the string is valid bu it does not match any of rows
+        else
+        {
+            <h5>Your Search - <b>@ViewBag.SearchString</b> for search category <b>@ViewBag.SearchByString</b> did not match any rows</h5>
+        }
+    }
+}
+else
+{
+    <table class="table">
+        <tr>
+            <th style="text-align:center">
+                <p>Equipment Name</p>
+            </th>
+            <th style="text-align:center">
+                <p>Equipment Total Quantity</p>
+            </th>
+            <th style="text-align:center">
+                <p>Equipment Currently In Use Count</p>
+            </th>
+            <th style="text-align:center">
+                <p>Equipment Category Name</p>
+            </th>
+            <th style="text-align:center"></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr style="text-align:center">
+                @{
+                    var color = "#fff";
+                    if (item.EquipmentCategory.EquipmentCategoryIsReusable)
+                    {
+                        if (item.PatientId == null)
+                        {
+                            color = "lightgreen";
+                        }
+                        else
+                        {
+                            color = "lightcoral";
+                        }
+                    }
+                }
+                <td style="background-color: @color">
+                    @Html.DisplayFor(modelItem => item.EquipmentName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EquipmentTotalQuantity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EquipmentInUseCount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EquipmentCategory.EquipmentCategoryName)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.EquipmentId }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.EquipmentId }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.EquipmentId })
+                </td>
+            </tr>
+        }
+
+    </table>
+}
+<a href="equipments">Show Full Equipment List</a>

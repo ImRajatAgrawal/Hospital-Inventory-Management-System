@@ -1,0 +1,80 @@
+﻿@model HospitalInventory.Models.Equipment
+
+@{
+    ViewBag.Title = "Delete";
+    if (Session["userID"] == null)
+    {
+        Response.Redirect("~/Login/LoginPage");
+    }
+    else if (Session["userRole"].Equals("Staff"))
+    {
+        Response.Redirect("~/Home/ErrorPage");
+    }
+}
+
+<h2>Delete the Equipment</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            <p>Equipment Name</p>
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EquipmentName)
+        </dd>
+
+        <dt>
+            <p>Equipment Total Quantity</p>
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EquipmentTotalQuantity)
+        </dd>
+
+        <dt>
+            <p>Equipment currently in Use quantity</p>
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EquipmentInUseCount)
+        </dd>
+
+        <dt>
+            <p>Equipment Seller Name</p>
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EquipmentSellerName)
+        </dd>
+
+        <dt>
+            <p>Patient Id</p>
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PatientId)
+        </dd>
+
+        <dt>
+            <p>Equipment Category Name</p>
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EquipmentCategory.EquipmentCategoryName)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

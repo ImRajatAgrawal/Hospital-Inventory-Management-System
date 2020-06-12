@@ -1,0 +1,456 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="HospitalInventoryModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="EmployeeId" />
+          </Key>
+          <Property Name="EmployeeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="employeeName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="userName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="password" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="emailAddress" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="designationId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EmployeeDesignation">
+          <Key>
+            <PropertyRef Name="designationId" />
+          </Key>
+          <Property Name="designationId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="designationName" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Equipment">
+          <Key>
+            <PropertyRef Name="EquipmentId" />
+          </Key>
+          <Property Name="EquipmentId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EquipmentName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="EquipmentTotalQuantity" Type="int" Nullable="false" />
+          <Property Name="EquipmentInUseCount" Type="int" Nullable="false" />
+          <Property Name="EquipmentSellerName" Type="varchar" MaxLength="50" />
+          <Property Name="EquipmentCategoryId" Type="int" Nullable="false" />
+          <Property Name="PatientId" Type="int" />
+        </EntityType>
+        <EntityType Name="EquipmentCategory">
+          <Key>
+            <PropertyRef Name="EquipmentCategoryId" />
+          </Key>
+          <Property Name="EquipmentCategoryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EquipmentCategoryName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="EquipmentCategoryIsReusable" Type="bit" Nullable="false" />
+          <Property Name="EquipmentCategoryThreshold" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Feedback">
+          <Key>
+            <PropertyRef Name="FeedbackId" />
+          </Key>
+          <Property Name="FeedbackId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EquipmentId" Type="int" Nullable="false" />
+          <Property Name="FeedbackPoints" Type="int" />
+        </EntityType>
+        <EntityType Name="Patient">
+          <Key>
+            <PropertyRef Name="PatientId" />
+          </Key>
+          <Property Name="PatientId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PatientCategoryId" Type="int" Nullable="false" />
+          <Property Name="EmployeeId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PatientCategory">
+          <Key>
+            <PropertyRef Name="PatientCategoryId" />
+          </Key>
+          <Property Name="PatientCategoryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PatientCategoryName" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Employee_EmployeeDesignation">
+          <End Role="EmployeeDesignation" Type="Self.EmployeeDesignation" Multiplicity="1" />
+          <End Role="Employee" Type="Self.Employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EmployeeDesignation">
+              <PropertyRef Name="designationId" />
+            </Principal>
+            <Dependent Role="Employee">
+              <PropertyRef Name="designationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Equipment_EquipmentCategory">
+          <End Role="EquipmentCategory" Type="Self.EquipmentCategory" Multiplicity="1" />
+          <End Role="Equipment" Type="Self.Equipment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EquipmentCategory">
+              <PropertyRef Name="EquipmentCategoryId" />
+            </Principal>
+            <Dependent Role="Equipment">
+              <PropertyRef Name="EquipmentCategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Equipment_Patient">
+          <End Role="Patient" Type="Self.Patient" Multiplicity="0..1" />
+          <End Role="Equipment" Type="Self.Equipment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patient">
+              <PropertyRef Name="PatientId" />
+            </Principal>
+            <Dependent Role="Equipment">
+              <PropertyRef Name="PatientId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Feedback_Equipment">
+          <End Role="Equipment" Type="Self.Equipment" Multiplicity="1" />
+          <End Role="Feedback" Type="Self.Feedback" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Equipment">
+              <PropertyRef Name="EquipmentId" />
+            </Principal>
+            <Dependent Role="Feedback">
+              <PropertyRef Name="EquipmentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Patient_Employee">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="Patient" Type="Self.Patient" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="EmployeeId" />
+            </Principal>
+            <Dependent Role="Patient">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Patient_PatientCategory">
+          <End Role="PatientCategory" Type="Self.PatientCategory" Multiplicity="1" />
+          <End Role="Patient" Type="Self.Patient" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PatientCategory">
+              <PropertyRef Name="PatientCategoryId" />
+            </Principal>
+            <Dependent Role="Patient">
+              <PropertyRef Name="PatientCategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="HospitalInventoryModelStoreContainer">
+          <EntitySet Name="Employee" EntityType="Self.Employee" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EmployeeDesignation" EntityType="Self.EmployeeDesignation" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Equipment" EntityType="Self.Equipment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EquipmentCategory" EntityType="Self.EquipmentCategory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Feedback" EntityType="Self.Feedback" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Patient" EntityType="Self.Patient" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PatientCategory" EntityType="Self.PatientCategory" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Employee_EmployeeDesignation" Association="Self.FK_Employee_EmployeeDesignation">
+            <End Role="EmployeeDesignation" EntitySet="EmployeeDesignation" />
+            <End Role="Employee" EntitySet="Employee" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Equipment_EquipmentCategory" Association="Self.FK_Equipment_EquipmentCategory">
+            <End Role="EquipmentCategory" EntitySet="EquipmentCategory" />
+            <End Role="Equipment" EntitySet="Equipment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Equipment_Patient" Association="Self.FK_Equipment_Patient">
+            <End Role="Patient" EntitySet="Patient" />
+            <End Role="Equipment" EntitySet="Equipment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Feedback_Equipment" Association="Self.FK_Feedback_Equipment">
+            <End Role="Equipment" EntitySet="Equipment" />
+            <End Role="Feedback" EntitySet="Feedback" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Patient_Employee" Association="Self.FK_Patient_Employee">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="Patient" EntitySet="Patient" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Patient_PatientCategory" Association="Self.FK_Patient_PatientCategory">
+            <End Role="PatientCategory" EntitySet="PatientCategory" />
+            <End Role="Patient" EntitySet="Patient" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="HospitalInventoryModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="EmployeeId" />
+          </Key>
+          <Property Name="EmployeeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="employeeName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="userName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="emailAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="designationId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="EmployeeDesignation" Relationship="Self.FK_Employee_EmployeeDesignation" FromRole="Employee" ToRole="EmployeeDesignation" />
+          <NavigationProperty Name="Patients" Relationship="HospitalInventoryModel.FK_Patient_Employee" FromRole="Employee" ToRole="Patient" />
+        </EntityType>
+        <EntityType Name="EmployeeDesignation">
+          <Key>
+            <PropertyRef Name="designationId" />
+          </Key>
+          <Property Name="designationId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="designationName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Employees" Relationship="Self.FK_Employee_EmployeeDesignation" FromRole="EmployeeDesignation" ToRole="Employee" />
+        </EntityType>
+        <Association Name="FK_Employee_EmployeeDesignation">
+          <End Role="EmployeeDesignation" Type="Self.EmployeeDesignation" Multiplicity="1" />
+          <End Role="Employee" Type="Self.Employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EmployeeDesignation">
+              <PropertyRef Name="designationId" />
+            </Principal>
+            <Dependent Role="Employee">
+              <PropertyRef Name="designationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="HospitalInventoryEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Employees" EntityType="Self.Employee" />
+          <EntitySet Name="EmployeeDesignations" EntityType="Self.EmployeeDesignation" />
+          <AssociationSet Name="FK_Employee_EmployeeDesignation" Association="Self.FK_Employee_EmployeeDesignation">
+            <End Role="EmployeeDesignation" EntitySet="EmployeeDesignations" />
+            <End Role="Employee" EntitySet="Employees" />
+          </AssociationSet>
+          <EntitySet Name="Equipments" EntityType="HospitalInventoryModel.Equipment" />
+          <EntitySet Name="EquipmentCategories" EntityType="HospitalInventoryModel.EquipmentCategory" />
+          <EntitySet Name="Feedbacks" EntityType="HospitalInventoryModel.Feedback" />
+          <EntitySet Name="Patients" EntityType="HospitalInventoryModel.Patient" />
+          <EntitySet Name="PatientCategories" EntityType="HospitalInventoryModel.PatientCategory" />
+          <AssociationSet Name="FK_Equipment_EquipmentCategory" Association="HospitalInventoryModel.FK_Equipment_EquipmentCategory">
+            <End Role="EquipmentCategory" EntitySet="EquipmentCategories" />
+            <End Role="Equipment" EntitySet="Equipments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Equipment_Patient" Association="HospitalInventoryModel.FK_Equipment_Patient">
+            <End Role="Patient" EntitySet="Patients" />
+            <End Role="Equipment" EntitySet="Equipments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Feedback_Equipment" Association="HospitalInventoryModel.FK_Feedback_Equipment">
+            <End Role="Equipment" EntitySet="Equipments" />
+            <End Role="Feedback" EntitySet="Feedbacks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Patient_PatientCategory" Association="HospitalInventoryModel.FK_Patient_PatientCategory">
+            <End Role="PatientCategory" EntitySet="PatientCategories" />
+            <End Role="Patient" EntitySet="Patients" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Patient_Employee" Association="HospitalInventoryModel.FK_Patient_Employee">
+            <End Role="Employee" EntitySet="Employees" />
+            <End Role="Patient" EntitySet="Patients" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Equipment">
+          <Key>
+            <PropertyRef Name="EquipmentId" />
+          </Key>
+          <Property Name="EquipmentId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EquipmentName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EquipmentTotalQuantity" Type="Int32" Nullable="false" />
+          <Property Name="EquipmentInUseCount" Type="Int32" Nullable="false" />
+          <Property Name="EquipmentSellerName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EquipmentCategoryId" Type="Int32" Nullable="false" />
+          <Property Name="PatientId" Type="Int32" />
+          <NavigationProperty Name="EquipmentCategory" Relationship="HospitalInventoryModel.FK_Equipment_EquipmentCategory" FromRole="Equipment" ToRole="EquipmentCategory" />
+          <NavigationProperty Name="Patient" Relationship="HospitalInventoryModel.FK_Equipment_Patient" FromRole="Equipment" ToRole="Patient" />
+          <NavigationProperty Name="Feedbacks" Relationship="HospitalInventoryModel.FK_Feedback_Equipment" FromRole="Equipment" ToRole="Feedback" />
+        </EntityType>
+        <EntityType Name="EquipmentCategory">
+          <Key>
+            <PropertyRef Name="EquipmentCategoryId" />
+          </Key>
+          <Property Name="EquipmentCategoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EquipmentCategoryName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EquipmentCategoryIsReusable" Type="Boolean" Nullable="false" />
+          <Property Name="EquipmentCategoryThreshold" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Equipments" Relationship="HospitalInventoryModel.FK_Equipment_EquipmentCategory" FromRole="EquipmentCategory" ToRole="Equipment" />
+        </EntityType>
+        <EntityType Name="Feedback">
+          <Key>
+            <PropertyRef Name="FeedbackId" />
+          </Key>
+          <Property Name="FeedbackId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EquipmentId" Type="Int32" Nullable="false" />
+          <Property Name="FeedbackPoints" Type="Int32" />
+          <NavigationProperty Name="Equipment" Relationship="HospitalInventoryModel.FK_Feedback_Equipment" FromRole="Feedback" ToRole="Equipment" />
+        </EntityType>
+        <EntityType Name="Patient">
+          <Key>
+            <PropertyRef Name="PatientId" />
+          </Key>
+          <Property Name="PatientId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PatientCategoryId" Type="Int32" Nullable="false" />
+          <Property Name="EmployeeId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Equipments" Relationship="HospitalInventoryModel.FK_Equipment_Patient" FromRole="Patient" ToRole="Equipment" />
+          <NavigationProperty Name="PatientCategory" Relationship="HospitalInventoryModel.FK_Patient_PatientCategory" FromRole="Patient" ToRole="PatientCategory" />
+          <NavigationProperty Name="Employee" Relationship="HospitalInventoryModel.FK_Patient_Employee" FromRole="Patient" ToRole="Employee" />
+        </EntityType>
+        <EntityType Name="PatientCategory">
+          <Key>
+            <PropertyRef Name="PatientCategoryId" />
+          </Key>
+          <Property Name="PatientCategoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PatientCategoryName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Patients" Relationship="HospitalInventoryModel.FK_Patient_PatientCategory" FromRole="PatientCategory" ToRole="Patient" />
+        </EntityType>
+        <Association Name="FK_Equipment_EquipmentCategory">
+          <End Type="HospitalInventoryModel.EquipmentCategory" Role="EquipmentCategory" Multiplicity="1" />
+          <End Type="HospitalInventoryModel.Equipment" Role="Equipment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EquipmentCategory">
+              <PropertyRef Name="EquipmentCategoryId" />
+            </Principal>
+            <Dependent Role="Equipment">
+              <PropertyRef Name="EquipmentCategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Equipment_Patient">
+          <End Type="HospitalInventoryModel.Patient" Role="Patient" Multiplicity="0..1" />
+          <End Type="HospitalInventoryModel.Equipment" Role="Equipment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patient">
+              <PropertyRef Name="PatientId" />
+            </Principal>
+            <Dependent Role="Equipment">
+              <PropertyRef Name="PatientId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Feedback_Equipment">
+          <End Type="HospitalInventoryModel.Equipment" Role="Equipment" Multiplicity="1" />
+          <End Type="HospitalInventoryModel.Feedback" Role="Feedback" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Equipment">
+              <PropertyRef Name="EquipmentId" />
+            </Principal>
+            <Dependent Role="Feedback">
+              <PropertyRef Name="EquipmentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Patient_PatientCategory">
+          <End Type="HospitalInventoryModel.PatientCategory" Role="PatientCategory" Multiplicity="1" />
+          <End Type="HospitalInventoryModel.Patient" Role="Patient" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PatientCategory">
+              <PropertyRef Name="PatientCategoryId" />
+            </Principal>
+            <Dependent Role="Patient">
+              <PropertyRef Name="PatientCategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Patient_Employee">
+          <End Type="HospitalInventoryModel.Employee" Role="Employee" Multiplicity="1" />
+          <End Type="HospitalInventoryModel.Patient" Role="Patient" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="EmployeeId" />
+            </Principal>
+            <Dependent Role="Patient">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="HospitalInventoryModelStoreContainer" CdmEntityContainer="HospitalInventoryEntities">
+          <EntitySetMapping Name="Employees">
+            <EntityTypeMapping TypeName="HospitalInventoryModel.Employee">
+              <MappingFragment StoreEntitySet="Employee">
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="employeeName" ColumnName="employeeName" />
+                <ScalarProperty Name="userName" ColumnName="userName" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="emailAddress" ColumnName="emailAddress" />
+                <ScalarProperty Name="designationId" ColumnName="designationId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EmployeeDesignations">
+            <EntityTypeMapping TypeName="HospitalInventoryModel.EmployeeDesignation">
+              <MappingFragment StoreEntitySet="EmployeeDesignation">
+                <ScalarProperty Name="designationId" ColumnName="designationId" />
+                <ScalarProperty Name="designationName" ColumnName="designationName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Equipments">
+            <EntityTypeMapping TypeName="HospitalInventoryModel.Equipment">
+              <MappingFragment StoreEntitySet="Equipment">
+                <ScalarProperty Name="PatientId" ColumnName="PatientId" />
+                <ScalarProperty Name="EquipmentCategoryId" ColumnName="EquipmentCategoryId" />
+                <ScalarProperty Name="EquipmentSellerName" ColumnName="EquipmentSellerName" />
+                <ScalarProperty Name="EquipmentInUseCount" ColumnName="EquipmentInUseCount" />
+                <ScalarProperty Name="EquipmentTotalQuantity" ColumnName="EquipmentTotalQuantity" />
+                <ScalarProperty Name="EquipmentName" ColumnName="EquipmentName" />
+                <ScalarProperty Name="EquipmentId" ColumnName="EquipmentId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EquipmentCategories">
+            <EntityTypeMapping TypeName="HospitalInventoryModel.EquipmentCategory">
+              <MappingFragment StoreEntitySet="EquipmentCategory">
+                <ScalarProperty Name="EquipmentCategoryThreshold" ColumnName="EquipmentCategoryThreshold" />
+                <ScalarProperty Name="EquipmentCategoryIsReusable" ColumnName="EquipmentCategoryIsReusable" />
+                <ScalarProperty Name="EquipmentCategoryName" ColumnName="EquipmentCategoryName" />
+                <ScalarProperty Name="EquipmentCategoryId" ColumnName="EquipmentCategoryId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Feedbacks">
+            <EntityTypeMapping TypeName="HospitalInventoryModel.Feedback">
+              <MappingFragment StoreEntitySet="Feedback">
+                <ScalarProperty Name="FeedbackPoints" ColumnName="FeedbackPoints" />
+                <ScalarProperty Name="EquipmentId" ColumnName="EquipmentId" />
+                <ScalarProperty Name="FeedbackId" ColumnName="FeedbackId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Patients">
+            <EntityTypeMapping TypeName="HospitalInventoryModel.Patient">
+              <MappingFragment StoreEntitySet="Patient">
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="PatientCategoryId" ColumnName="PatientCategoryId" />
+                <ScalarProperty Name="PatientId" ColumnName="PatientId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PatientCategories">
+            <EntityTypeMapping TypeName="HospitalInventoryModel.PatientCategory">
+              <MappingFragment StoreEntitySet="PatientCategory">
+                <ScalarProperty Name="PatientCategoryName" ColumnName="PatientCategoryName" />
+                <ScalarProperty Name="PatientCategoryId" ColumnName="PatientCategoryId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
