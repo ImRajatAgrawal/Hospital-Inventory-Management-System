@@ -128,13 +128,12 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Controllers\EquipmentCategoriesController.cs" />
-    <Compile Include="Controllers\EquipmentsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\ChangePassword.cs" />
     <Compile Include="Models\Employee.cs">
       <DependentUpon>InventoryDb.tt</DependentUpon>
     </Compile>
@@ -230,16 +229,7 @@
     <Content Include="Views\Home\Admin.cshtml" />
     <Content Include="Views\Home\ErrorPage.cshtml" />
     <Content Include="Views\Login\LoginPage.cshtml" />
-    <Content Include="Views\Equipments\Create.cshtml" />
-    <Content Include="Views\Equipments\Delete.cshtml" />
-    <Content Include="Views\Equipments\Details.cshtml" />
-    <Content Include="Views\Equipments\Edit.cshtml" />
-    <Content Include="Views\Equipments\Index.cshtml" />
-    <Content Include="Views\EquipmentCategories\Create.cshtml" />
-    <Content Include="Views\EquipmentCategories\Delete.cshtml" />
-    <Content Include="Views\EquipmentCategories\Details.cshtml" />
-    <Content Include="Views\EquipmentCategories\Edit.cshtml" />
-    <Content Include="Views\EquipmentCategories\Index.cshtml" />
+    <Content Include="Views\Login\ChangePassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

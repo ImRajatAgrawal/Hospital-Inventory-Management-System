@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - Hospital Inventory Management System</title>
+    <title>@ViewBag.Title - Hospital Inventory</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
@@ -31,7 +31,7 @@
                     <span class="icon-bar"></span>
                 </button>
                 <i class="navbar-brand"><span class="fa fa-hospital-o"></span></i>
-                @Html.ActionLink("Hospital Inventory Management System", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("Hospital Inventory", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="collapse navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
@@ -80,7 +80,7 @@
                             </button>
                             <ul class="dropdown-menu" role="menu">
                                 <li>
-                                    <a href="#">
+                                    <a href="@Url.Action("ChangePassword", "Login")">
                                         <span class="glyphicon glyphicon-pencil"></span>
                                          Change Password
                                     </a>
@@ -92,20 +92,6 @@
                                 </li>
                             </ul>
                         </li>
-
-
-                        @*<li>
-                <a href="@Url.Action("Logout", "Login")">
-                    <span class="glyphicon glyphicon-log-out"></span>
-                    Logout
-                </a>
-            </li>*@
-                        @*<li>
-                <a href="@Url.Action("ChangePassword", "Login")">
-                    <span class="glyphicon glyphicon-pencil"></span>
-                    Change Password
-                </a>
-            </li>*@
 
                     }
                     else
@@ -125,7 +111,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - Hospital Inventory Management System</p>
+            <p>&copy; @DateTime.Now.Year - Hospital Inventory</p>
         </footer>
     </div>
 

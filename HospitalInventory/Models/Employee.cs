@@ -11,6 +11,7 @@ namespace HospitalInventory.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
 
     public partial class Employee
@@ -23,6 +24,7 @@ namespace HospitalInventory.Models
     
         public int EmployeeId { get; set; }
         public string employeeName { get; set; }
+        [DisplayName("UserName")]
         [Required(ErrorMessage = "This Field is Required")]
         public string userName { get; set; }
         [RegularExpression(@"^\S*$", ErrorMessage = "White spaces are not allowed in password")]

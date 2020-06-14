@@ -66,6 +66,7 @@
           </Key>
           <Property Name="PatientCategoryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="PatientCategoryName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="EquipmentName" Type="varchar(max)" />
         </EntityType>
         <Association Name="FK_Employee_EmployeeDesignation">
           <End Role="EmployeeDesignation" Type="Self.EmployeeDesignation" Multiplicity="1" />
@@ -294,6 +295,7 @@
           <Property Name="PatientCategoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="PatientCategoryName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Patients" Relationship="HospitalInventoryModel.FK_Patient_PatientCategory" FromRole="PatientCategory" ToRole="Patient" />
+          <Property Name="EquipmentName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
         <Association Name="FK_Equipment_EquipmentCategory">
           <End Type="HospitalInventoryModel.EquipmentCategory" Role="EquipmentCategory" Multiplicity="1" />
@@ -425,6 +427,7 @@
           <EntitySetMapping Name="PatientCategories">
             <EntityTypeMapping TypeName="HospitalInventoryModel.PatientCategory">
               <MappingFragment StoreEntitySet="PatientCategory">
+                <ScalarProperty Name="EquipmentName" ColumnName="EquipmentName" />
                 <ScalarProperty Name="PatientCategoryName" ColumnName="PatientCategoryName" />
                 <ScalarProperty Name="PatientCategoryId" ColumnName="PatientCategoryId" />
               </MappingFragment>

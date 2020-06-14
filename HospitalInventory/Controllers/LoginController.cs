@@ -48,6 +48,33 @@ namespace HospitalInventory.Controllers
             Session.Abandon();
             return RedirectToAction("Index", "Home");
         }
+        public ActionResult ChangePassword()
+        {
+            ViewBag.Message = null;
+            return View();
+        }
+        [HttpPost]
+        public ActionResult ChangeThePassword(ChangePassword cpm)
+        {
+            using (HospitalInventoryEntities db = new HospitalInventoryEntities())
+            {
+                var employees = db.Employees.Where(emp => emp.password == cpm.CurrentPassword).ToList();
+                var userDetail = employees.SingleOrDefault(emp =>emp.password == cpm.CurrentPassword);
 
+                if (userDetail == null || !(userDetail.userName.Equals(Session["userName"])))
+                {
+                    ModelState.AddModelError("CurrentPassword", "Incorrect Current Password");
+                    return View("ChangePassword", cpm);
+                }
+                else
+                {
+                    ViewBag.Message = "Password changed successfully!!";
+                    userDetail.password = cpm.ConfirmPassword;
+                    db.SaveChanges();
+                    return View("ChangePassword", cpm);
+                }
+            }
+
+        }
     }
 }
