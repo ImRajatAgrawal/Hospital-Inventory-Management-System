@@ -33,7 +33,8 @@ namespace HospitalInventory.Models
         public string password { get; set; }
         public string emailAddress { get; set; }
         public int designationId { get; set; }
-    
+        [DisplayName("Remember Me")]
+        public bool RememberMe { get; set; }
         public virtual EmployeeDesignation EmployeeDesignation { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Patient> Patients { get; set; }

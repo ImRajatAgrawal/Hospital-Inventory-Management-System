@@ -1,5 +1,8 @@
 ﻿using HospitalInventory.Models;
+using System;
 using System.Linq;
+using System.Text;
+using System.Web;
 using System.Web.Mvc;
 
 namespace HospitalInventory.Controllers
@@ -10,6 +13,17 @@ namespace HospitalInventory.Controllers
         [HttpGet]
         public ActionResult LoginPage()
         {
+            HttpCookie cookie = Request.Cookies.Get("Employee");
+            if (cookie != null)
+            {
+                string EncryptedPassword = cookie["password"];
+                byte[] b = Convert.FromBase64String(EncryptedPassword);
+                string DecryptedPassword = ASCIIEncoding.ASCII.GetString(b);
+                ViewBag.username = cookie["username"];
+                ViewBag.password = DecryptedPassword;
+
+            }
+
             return View();
         }
         [HttpPost]
@@ -30,6 +44,21 @@ namespace HospitalInventory.Controllers
 
                 else
                 {
+                    HttpCookie cookie = new HttpCookie("Employee");
+                    if (employee.RememberMe)
+                    {
+                        cookie["username"] = empDetail.userName;
+                        byte[] b = ASCIIEncoding.ASCII.GetBytes(empDetail.password);
+                        string EncryptedPassword = Convert.ToBase64String(b);
+                        cookie["password"] = EncryptedPassword;
+                        cookie.Expires = DateTime.Now.AddDays(2);
+                        HttpContext.Response.Cookies.Add(cookie);
+                    }
+                    else
+                    {
+                        cookie.Expires = DateTime.Now.AddDays(-1);
+                        HttpContext.Response.Cookies.Add(cookie);
+                    }
                     var designation = db.EmployeeDesignations.Where(desg => desg.designationId == empDetail.designationId).SingleOrDefault();
                     Session["userID"] = empDetail.EmployeeId;
                     Session["employeeName"] = empDetail.employeeName;
