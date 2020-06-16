@@ -95,11 +95,22 @@ namespace HospitalInventory.Controllers
                     ModelState.AddModelError("CurrentPassword", "Incorrect Current Password");
                     return View("ChangePassword", cpm);
                 }
+                else if (cpm.CurrentPassword.Equals(cpm.NewPassword))
+                {
+                    ModelState.AddModelError("NewPassword", "New password cannot be same as current password");
+                    return View("ChangePassword", cpm);
+                }
                 else
                 {
                     ViewBag.Message = "Password changed successfully!!";
                     userDetail.password = cpm.ConfirmPassword;
                     db.SaveChanges();
+                    HttpCookie cookie = Request.Cookies.Get("Employee");
+                    if (cookie != null)
+                    {
+                        cookie.Expires = DateTime.Now.AddDays(-1);
+                        HttpContext.Response.Cookies.Add(cookie);
+                    }
                     return View("ChangePassword", cpm);
                 }
             }

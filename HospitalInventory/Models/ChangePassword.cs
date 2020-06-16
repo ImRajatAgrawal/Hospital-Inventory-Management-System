@@ -10,6 +10,7 @@ namespace HospitalInventory.Models
     {
         [Required(ErrorMessage ="Current Password is Required")]
         [DataType(DataType.Password)]
+        [RegularExpression(@"^\S*$", ErrorMessage = "White spaces are not allowed in password")]
         [Display(Name = "Current Password")]
         public string CurrentPassword { get; set; }
 
