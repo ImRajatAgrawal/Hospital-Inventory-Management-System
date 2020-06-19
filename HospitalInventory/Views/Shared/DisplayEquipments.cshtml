@@ -1,0 +1,10 @@
+﻿@model HospitalInventory.Models.Equipment
+
+<option value="">-- Select Equipment --</option>
+
+@if( ViewBag.EquipmentList !=null){
+    foreach(var item in ViewBag.EquipmentList)
+    {
+        <option value="@item.Value">@item.Text</option>
+    }
+}

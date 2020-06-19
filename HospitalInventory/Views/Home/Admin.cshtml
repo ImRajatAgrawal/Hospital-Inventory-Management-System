@@ -1,5 +1,6 @@
-﻿@{
-    ViewBag.Title = "Admin";
+﻿@model HospitalInventory.Models.CreateUser
+@{
+    ViewBag.Title = "CREATE USER";
     if (Session["userID"] == null)
     {
         Response.Redirect("~/Login/LoginPage");
@@ -13,7 +14,57 @@
         Response.Redirect("~/Home/ErrorPage");
     }
 }
-<h2>@ViewBag.Title.</h2>
-<h3>@ViewBag.Message</h3>
+<h2>@ViewBag.Title</h2>
+<br>
+<h3 class="text-success">@ViewBag.Message</h3>
+@using (Html.BeginForm("Admin", "Home", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
 
-<p>Use this area to provide additional information.</p>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.employeeName, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.employeeName, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.employeeName)
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.userName, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.userName, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.userName)
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.password, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.password, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.password)
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.emailId, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.emailId, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.emailId)
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.empDesignation, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.empDesignation, ViewBag.data as SelectList,"Select Designation" , new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.empDesignation)
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Create User" class="btn btn-primary" />
+        </div>
+    </div>
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+

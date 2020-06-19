@@ -128,12 +128,14 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\EquipmentCheckoutController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\ChangePassword.cs" />
+    <Compile Include="Models\CreateUser.cs" />
     <Compile Include="Models\Employee.cs">
       <DependentUpon>InventoryDb.tt</DependentUpon>
     </Compile>
@@ -146,6 +148,7 @@
     <Compile Include="Models\EquipmentCategory.cs">
       <DependentUpon>InventoryDb.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\EquipmentModel.cs" />
     <Compile Include="Models\Feedback.cs">
       <DependentUpon>InventoryDb.tt</DependentUpon>
     </Compile>
@@ -230,6 +233,8 @@
     <Content Include="Views\Home\ErrorPage.cshtml" />
     <Content Include="Views\Login\LoginPage.cshtml" />
     <Content Include="Views\Login\ChangePassword.cshtml" />
+    <Content Include="Views\EquipmentCheckout\Index.cshtml" />
+    <Content Include="Views\Shared\DisplayEquipments.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

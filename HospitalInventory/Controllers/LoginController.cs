@@ -101,7 +101,7 @@ namespace HospitalInventory.Controllers
                     return View("ChangePassword", cpm);
                 }
                 else
-                {
+                { 
                     ViewBag.Message = "Password changed successfully!!";
                     userDetail.password = cpm.ConfirmPassword;
                     db.SaveChanges();
