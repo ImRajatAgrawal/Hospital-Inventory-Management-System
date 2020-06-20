@@ -1,106 +1,61 @@
 ﻿@{
     ViewBag.Title = "Home Page";
+
 }
 
 <!DOCTYPE html>
 <html>
 <head>
-    <title></title>
+    <title>Home</title>
     <link href="@Url.Content("~/Content/Style.css")" rel="stylesheet" type="text/css" />
+
+    @for (int i = 1; i <= ViewBag.patientintake.Count; i++)
+    {
+        <style>
+            .card:nth-child(@i) svg circle:nth-child(2) {
+                stroke-dashoffset: 0;
+                stroke: #0fff03;
+            }
+        </style>
+    }
     <style>
-        .card:nth-child(1) svg circle:nth-child(2) {
-            stroke-dashoffset: 0;
-            stroke: #00ff43;
-        }
-
-        .card:nth-child(2) svg circle:nth-child(2) {
-            stroke-dashoffset: 0;
-            stroke: #00a1ff;
-        }
-
-        .card:nth-child(3) svg circle:nth-child(2) {
-            stroke-dashoffset: 0;
-            stroke: #ff04f7;
-        }
-        .card:nth-child(4) svg circle:nth-child(2) {
-            stroke-dashoffset: 0;
-            stroke: #ffff17;
-        }
         body {
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background-color: lightblue;
+            background-color: black;
+            background: linear-gradient(to bottom left, #00ffff 0%, #ff33cc 100%);
         }
     </style>
-</head> 
+</head>
 <body>
     <center>
-        <h4 style="color: blue; font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif">NO OF PATIENTS THAT CAN BE ACCOMODATED</h4>
+        <h3 style="color: black; font-weight: bold;
+           font-family: 'Times New Roman'; font-size: 40px">
+            PATIENTS INTAKE
+        </h3>
     </center>
     <div class="container" id="mycontainer">
-        <div class="card">
-            <div class="box">
-                <div class="percent">
-                    <svg>
-                        <circle cx="70" cy="70" r="70"></circle>
-                        <circle cx="70" cy="70" r="70"></circle>
-                    </svg>
-                    <div class="number">
-                        <h2>@ViewBag.arr[3]<span></span></h2>
+        @foreach (var category in ViewBag.patientintake)
+        {
+            string val = category.Key + "_Patient_Intake";
+            <div title=@val class="card">
+                <div class="box">
+                    <div class="percent">
+                        <svg>
+                            <circle cx="70" cy="70" r="70"></circle>
+                            <circle cx="70" cy="70" r="70"></circle>
+                        </svg>
+                        <div class="number">
+                            <h2>@category.Value<span class="fa fa-wheelchair"></span></h2>
+                        </div>
                     </div>
+                    <h2 class="text">@category.Key</h2>
                 </div>
-                <h2 class="text">MILD</h2>
             </div>
-        </div>
-        <div class="card">
-            <div class="box">
-                <div class="percent">
-                    <svg>
-                        <circle cx="70" cy="70" r="70"></circle>
-                        <circle cx="70" cy="70" r="70"></circle>
-                    </svg>
-                    <div class="number">
-                        <h2>@ViewBag.arr[4]<span></span></h2>
-                    </div>
-                </div>
-                <h2 class="text">SEVERE</h2>
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="box">
-                <div class="percent">
-                    <svg>
-                        <circle cx="70" cy="70" r="70"></circle>
-                        <circle cx="70" cy="70" r="70"></circle>
-                    </svg>
-                    <div class="number">
-                        <h2>@ViewBag.arr[5]<span></span></h2>
-                    </div>
-                </div>
-                <h2 class="text">SYMPTOMATIC</h2>
-
-            </div>
-        </div>
-        <div class="card">
-            <div class="box">
-                <div class="percent">
-                    <svg>
-                        <circle cx="70" cy="70" r="70"></circle>
-                        <circle cx="70" cy="70" r="70"></circle>
-                    </svg>
-                    <div class="number">
-                        <h2>@ViewBag.arr[7]<span></span></h2>
-                    </div>
-                </div>
-                <h2 class="text">ASYMPTOMATIC</h2>
-
-            </div>
-        </div>
+        }
 
     </div>
 </body>
 </html>
-

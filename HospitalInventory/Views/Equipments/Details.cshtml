@@ -14,6 +14,12 @@
 
 <h2>Delete the Equipment</h2>
 
+<style>
+    a {
+        color: purple;
+    }
+</style>
+
 <h3>Are you sure you want to delete this?</h3>
 <div>
     <hr />
@@ -74,7 +80,7 @@
 
         <div class="form-actions no-color">
             <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
+            <a href="@Url.Action("Index", "EquipmentCategories")">Show Equipment category List</a>
         </div>
     }
 </div>

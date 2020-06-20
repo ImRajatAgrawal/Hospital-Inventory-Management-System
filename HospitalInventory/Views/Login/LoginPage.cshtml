@@ -6,8 +6,6 @@
     {
         Response.Redirect("~/Home/Index");
     }
-
-
 }
 
 <!DOCTYPE html>
@@ -27,17 +25,17 @@
             margin: 50px auto;
         }
 
-            .simple-login-container h2 {
-                text-align: center;
-                font-size: 20px;
-            }
+        .simple-login-container h2 {
+            text-align: center;
+            font-size: 20px;
+        }
 
-            .simple-login-container .btn-login {
-                background-color: #FF5964;
-                color: #fff;
-            }
+        .simple-login-container .btn-login {
+            background-color: #FF5964;
+            color: #fff;
+        }
 
-        a {
+        a{
             color: #fff;
         }
 
@@ -49,22 +47,29 @@
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
-<body style="background-color: lavender">
+<body style="background: linear-gradient(to right, #33ccff 0%, #ff99cc 100%)">
     @using (Html.BeginForm("Authorize", "Login", FormMethod.Post))
     {
         <div class="simple-login-container">
-            <h2>Sign In</h2>
+            <h2 style="font-size: x-large">Sign In</h2>
             <br>
             <div class="row">
                 <div class="col-md-12 form-group">
-                    @Html.EditorFor(model => model.userName, new { htmlAttributes = new { @placeholder = "Enter username", @class = "form-control" } })
+                    @Html.EditorFor(model => model.userName, new { htmlAttributes = new { @placeholder = "Enter username", @class = "form-control", @Value = ViewBag.username } })
                     @Html.ValidationMessageFor(model => model.userName)
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-12 form-group">
-                    @Html.EditorFor(model => model.password, new { htmlAttributes = new { @placeholder = "Enter password", @class = "form-control" } })
+                    @Html.EditorFor(model => model.password, new { htmlAttributes = new { @placeholder = "Enter password", @class = "form-control", @Value = ViewBag.password } })
                     @Html.ValidationMessageFor(model => model.password, "")
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 form-group">
+                    @Html.CheckBoxFor(model => model.RememberMe)
+                    @Html.LabelFor(model => model.RememberMe)
+
                 </div>
             </div>
             <div class="row">
@@ -72,11 +77,11 @@
                     <input type="submit" class="btn btn-block btn-login" value="SIGN IN">
                 </div>
             </div>
-            <div class="row">
+            <!--<div class="row">
                 <div class="col-md-12">
                     <a href="">Forgot Password?</a>
                 </div>
-            </div>
+            </div>-->
         </div>
     }
     <script src="~/Scripts/jquery-1.8.0.min.js"></script>

@@ -1,0 +1,35 @@
+﻿@model HospitalInventory.Models.PatientCategory
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>PatientCategory</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.PatientCategoryName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PatientCategoryName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EquipmentName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EquipmentName)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.PatientCategoryId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

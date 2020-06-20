@@ -19,7 +19,7 @@ namespace HospitalInventory.Models
         {
             this.Feedbacks = new HashSet<Feedback>();
         }
-        
+    
         public int EquipmentId { get; set; }
         public string EquipmentName { get; set; }
         public int EquipmentTotalQuantity { get; set; }

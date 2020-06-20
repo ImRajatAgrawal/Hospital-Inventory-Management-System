@@ -9,6 +9,53 @@
         Response.Redirect("~/Home/ErrorPage");
     }
 }
-<h2>@ViewBag.Title.</h2>
-<h3>@ViewBag.Message</h3>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+    .button {
+        border-radius: 4px;
+        background-color: gold;
+        border: none;
+        color: black;
+        text-align: center;
+        font-size: 28px;
+        padding: 20px;
+        width: 800px;
+        transition: all 0.5s;
+        cursor: pointer;
+        margin: 150px;
+    }
 
+    .button span {
+        cursor: pointer;
+        display: inline-block;
+        position: relative;
+        transition: 0.5s;
+    }
+
+    .button span:after {
+        content: '\00bb';
+        position: absolute;
+        opacity: 0;
+        top: 0;
+        right: -20px;
+        transition: 0.5s;
+    }
+
+    .button:hover span {
+        padding-right: 40px;
+    }
+
+    .button:hover span:after {
+        opacity: 1;
+        right: 0;
+    }
+</style>
+<body>
+
+    <a href="@Url.Action("Index", "EquipmentCategories")" style="font-size:large">
+        <p class="button"><span>Manage Equipment categories and equipment </span></p>
+    </a>
+    <a href="@Url.Action("Index", "EquipmentCheckout")" style="font-size:large">
+        <p class="button"><span>Withdraw Equipment </span></p>
+    </a>
+</body>

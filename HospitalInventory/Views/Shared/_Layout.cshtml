@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - Hospital Inventory Management System</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    @Scripts.Render("~/bundles/jquery")
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     <style>
@@ -17,6 +18,23 @@
             font-family: inherit;
             margin: 0;
         }
+
+        h2{
+            font-family: 'Copperplate Gothic'; 
+            font-size: x-large;
+        }
+
+        body {
+            background: linear-gradient(to right, #33ccff 0%, #ff99cc 100%);
+            @* animation: myanimation 5s infinite; *@
+            color: black;
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+            font-size: small;
+        }
+        @* @@keyframes myanimation{
+            from {background: #00ffff;}
+            to {background: #ff3399;}
+        }*@
     </style>
 </head>
 
@@ -36,9 +54,6 @@
                 <ul class="nav navbar-nav navbar-right">
                     @if (Session["userID"] != null)
                     {
-
-
-
                         if (Session["userRole"].Equals("Admin"))
                         {
                             <li>
@@ -51,7 +66,6 @@
                                     Equipment Manager Menu
                                 </a>
                             </li>
-
                         }
 
                         else if (Session["userRole"].Equals("Manager"))
@@ -74,7 +88,7 @@
                             </button>
                             <ul class="dropdown-menu" role="menu">
                                 <li>
-                                    <a href="#">
+                                    <a href="@Url.Action("ChangePassword","Login")">
                                         <span class="glyphicon glyphicon-pencil"></span>
                                         Change Password
                                     </a>
@@ -123,7 +137,7 @@
         </footer>
     </div>
 
-    @Scripts.Render("~/bundles/jquery")
+    
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
 </body>

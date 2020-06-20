@@ -12,13 +12,19 @@
     }
 }
 
-<h2>Equipment Categories List</h2>
+<style>
+    a{
+        color: purple;
+    }
+</style>
 
-<p>
-    @Html.ActionLink("Create New Equipment Category", "Create")
-</p>
-<a href="equipments" title="Manage_Equipments" style="font-size:medium">Manage Equipments</a>
-<table class="table">
+<h2 class="text-center" style="font-family: 'Copperplate Gothic'; font-size: x-large">Equipment Category List</h2>
+<div class="panel-heading">
+    <a style="float:left; font-size:medium" href="@Url.Action("Create", "EquipmentCategories")">Create New Equipment Category</a>
+</div>
+<br/>
+<br/>
+<table class="table" border="1" style="border:solid; border-color:gold">
     <tr>
         <th style="text-align: center">
             Equipment Category Name
@@ -29,7 +35,9 @@
         <th style="text-align: center">
             Equipment Category Threshold
         </th>
-        <th style="text-align: center"></th>
+        <th style="text-align: center">
+            Operations
+        </th>
     </tr>
 
     @foreach (var item in Model)
@@ -38,21 +46,25 @@
             <td>
                 @Html.DisplayFor(modelItem => item.EquipmentCategoryName)
             </td>
-            <td style="font-weight:bold">
-                @Html.DisplayFor(modelItem => item.EquipmentCategoryIsReusable)
+            <td>
+                @if (item.EquipmentCategoryIsReusable)
+                {
+                    <p>YES</p>
+                }
+                else
+                {
+                    <p>NO</p>
+                }
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.EquipmentCategoryThreshold)
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id = item.EquipmentCategoryId }) |
-                @Html.ActionLink("Details", "Details", new { id = item.EquipmentCategoryId }) |
+                @Html.ActionLink("Details", "Index", new { Controller = "Equipments", searchBy = "EquipmentCategoryName", search = item.EquipmentCategoryName }) |
                 @Html.ActionLink("Delete", "Delete", new { id = item.EquipmentCategoryId })
             </td>
         </tr>
     }
 
 </table>
-<p>
-    @Html.ActionLink("Go to Equipment Category List", "Index")
-</p>

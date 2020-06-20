@@ -66,6 +66,7 @@
           </Key>
           <Property Name="PatientCategoryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="PatientCategoryName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="EquipmentName" Type="varchar(max)" />
         </EntityType>
         <Association Name="FK_Employee_EmployeeDesignation">
           <End Role="EmployeeDesignation" Type="Self.EmployeeDesignation" Multiplicity="1" />
@@ -80,7 +81,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Equipment_EquipmentCategory">
-          <End Role="EquipmentCategory" Type="Self.EquipmentCategory" Multiplicity="1" />
+          <End Role="EquipmentCategory" Type="Self.EquipmentCategory" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="Equipment" Type="Self.Equipment" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="EquipmentCategory">
@@ -100,18 +103,6 @@
             </Principal>
             <Dependent Role="Equipment">
               <PropertyRef Name="PatientId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Feedback_Equipment">
-          <End Role="Equipment" Type="Self.Equipment" Multiplicity="1" />
-          <End Role="Feedback" Type="Self.Feedback" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Equipment">
-              <PropertyRef Name="EquipmentId" />
-            </Principal>
-            <Dependent Role="Feedback">
-              <PropertyRef Name="EquipmentId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -158,10 +149,6 @@
           <AssociationSet Name="FK_Equipment_Patient" Association="Self.FK_Equipment_Patient">
             <End Role="Patient" EntitySet="Patient" />
             <End Role="Equipment" EntitySet="Equipment" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Feedback_Equipment" Association="Self.FK_Feedback_Equipment">
-            <End Role="Equipment" EntitySet="Equipment" />
-            <End Role="Feedback" EntitySet="Feedback" />
           </AssociationSet>
           <AssociationSet Name="FK_Patient_Employee" Association="Self.FK_Patient_Employee">
             <End Role="Employee" EntitySet="Employee" />
@@ -294,6 +281,7 @@
           <Property Name="PatientCategoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="PatientCategoryName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Patients" Relationship="HospitalInventoryModel.FK_Patient_PatientCategory" FromRole="PatientCategory" ToRole="Patient" />
+          <Property Name="EquipmentName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
         <Association Name="FK_Equipment_EquipmentCategory">
           <End Type="HospitalInventoryModel.EquipmentCategory" Role="EquipmentCategory" Multiplicity="1" />
@@ -425,6 +413,7 @@
           <EntitySetMapping Name="PatientCategories">
             <EntityTypeMapping TypeName="HospitalInventoryModel.PatientCategory">
               <MappingFragment StoreEntitySet="PatientCategory">
+                <ScalarProperty Name="EquipmentName" ColumnName="EquipmentName" />
                 <ScalarProperty Name="PatientCategoryName" ColumnName="PatientCategoryName" />
                 <ScalarProperty Name="PatientCategoryId" ColumnName="PatientCategoryId" />
               </MappingFragment>

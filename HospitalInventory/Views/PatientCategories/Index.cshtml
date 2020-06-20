@@ -1,0 +1,49 @@
+﻿@model IEnumerable<HospitalInventory.Models.PatientCategory>
+
+@{
+    ViewBag.Title = "Index";
+    if (Session["userID"] == null)
+    {
+        Response.Redirect("~/Login/LoginPage");
+    }
+    else if (Session["userRole"].Equals("Staff"))
+    {
+        Response.Redirect("~/Home/ErrorPage");
+    }
+}
+
+<h2 class="text-center" style="font-family: 'Copperplate Gothic'; font-size: x-large">Patient Category List</h2>
+
+<div class="panel-heading">
+    <a style="float:left; font-size:medium" href="@Url.Action("Create", "PatientCategories")">Create New Patient Category</a>
+</div>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.PatientCategoryName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EquipmentName)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.PatientCategoryName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EquipmentName)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.PatientCategoryId }) |
+                @Html.ActionLink("Details", "Details", new { id = item.PatientCategoryId }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.PatientCategoryId })
+            </td>
+        </tr>
+    }
+
+</table>

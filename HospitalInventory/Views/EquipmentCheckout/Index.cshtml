@@ -1,0 +1,80 @@
+﻿@model HospitalInventory.Models.EquipmentModel
+@{
+    ViewBag.Title = "Index";
+}
+
+@{
+    ViewBag.Title = "Index";
+    if (Session["userID"] == null)
+    {
+        Response.Redirect("~/Login/LoginPage");
+    }
+    else if (Session["userRole"].Equals("Staff"))
+    {
+        Response.Redirect("~/Home/ErrorPage");
+    }
+}
+
+<script src="https://code.jquery.com/jquery-1.7.1.min.js"></script>
+
+<div class="jumbotron" style="font-size: large">Equipments Checkout</div>
+
+@Html.Raw(TempData["msg"])
+@using (Html.BeginForm("Withdraw", "EquipmentCheckout", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    <div class="form-group">
+        @Html.LabelFor(m => m.EquipmentCategoryId, new { @class = "col-md-4 control-label" })
+        <div class="col-md-8">
+            @if (ViewBag.CategoryList != null)
+            {
+                @Html.DropDownListFor(x => x.EquipmentCategoryId, ViewBag.CategoryList as SelectList, "-- Select Equipment Category --", new { @class = "form-control" });
+                @Html.ValidationMessageFor(x => x.EquipmentCategoryId)
+            }
+
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.EquipmentId, new { @class = "col-md-4 control-label" })
+        <div class="col-md-8">
+            @Html.DropDownListFor(x => x.EquipmentId, new SelectList(""), "-- Select Equipment --", new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.EquipmentId)
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.quantity, new { @class = "col-md-4 control-label" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.quantity, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.quantity)
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-4 col-md-8">
+            <input type="submit" value="Withdraw" class="btn btn-primary" />
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#EquipmentCategoryId').change(function () {
+                var EquipmentCategoryId = $(this).val();
+                debugger
+                $.ajax({
+                    type: "post",
+                    url: "/EquipmentCheckout/GetEquipment?EquipmentCategoryId=" + EquipmentCategoryId,
+                    contentType: "html",
+                    success: function (response) {
+                        debugger
+                        $("#EquipmentId").empty();
+                        $("#EquipmentId").append(response);
+                    }
+                })
+            })
+        })
+
+    </script>
+}

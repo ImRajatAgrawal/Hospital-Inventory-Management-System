@@ -14,6 +14,11 @@
 
 <h2>Edit the Equipment</h2>
 
+<style>
+    a {
+        color: purple;
+    }
+</style>
 
 @using (Html.BeginForm())
 {
@@ -81,7 +86,7 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    <a href="@Url.Action("Index", "EquipmentCategories")">Show Equipment category List</a>
 </div>
 
 @section Scripts {

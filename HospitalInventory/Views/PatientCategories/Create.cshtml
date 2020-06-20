@@ -1,0 +1,112 @@
+﻿@model HospitalInventory.Models.PatientCategory
+
+@{
+    ViewBag.Title = "Create";
+    if (Session["userID"] == null)
+    {
+        Response.Redirect("~/Login/LoginPage");
+    }
+    else if (Session["userRole"].Equals("Staff"))
+    {
+        Response.Redirect("~/Home/ErrorPage");
+    }
+}
+<link href="~/Content/css/select2.min.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/select2.min.js"></script>
+<h2>Create New Patient Category</h2>
+
+@using (Html.BeginForm(Html.BeginForm("SaveRecord", "PatientCategories", FormMethod.Post)))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.PatientCategoryName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.PatientCategoryName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.PatientCategoryName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.EquipmentName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <p>
+
+            </p>
+
+            <select class="select2-dropdown" id="myselect2" multiple></select>
+            <p>
+
+            </p>
+            <div class="col-md-10">
+          
+                <input type="text" id="eqplist" name="eqplist" value="@ViewData["eqplist"]" class="control-label col-md-2" />
+                @Html.ValidationMessageFor(model => model.EquipmentName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Submit" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+<script>
+    $(document).ready(function () {
+        $(".select2-dropdown").select2({
+            placeholder: "select equipment",
+            allowclear: true,
+            theme: "classic",
+            ajax: {
+                url: "/PatientCategories/GetEquipment",
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        searchterm: params.term
+                    };
+                },
+                processResults: function (data, params) {
+                    return {
+                        results: data
+                    };
+                }
+            }
+        });
+    });
+
+    $(".select2-dropdown").on("change", function () {
+        var EquipmentIds = $(this).val();
+        $.ajax({
+            url: "/PatientCategories/AddEquipement?EquipmentIds=" + EquipmentIds,
+            dataType: 'json',
+            type: 'post',
+            success: function (data) {
+                $('#eqplist').val(data);
+            },
+            processResults: function (eqpdata, params) {
+                ViewData["eqplist"] = eqpdata
+                document.getElementById("eqplist").value = eqpdata.EquipmentName
+                $(".control-label").empty();
+
+                $(".control-label").append("<value='" + eqpdata + "'/>")
+                model.EquipmentName = eqpdata
+                return {
+                    results: eqpdata
+                };
+            }
+        });
+    });
+</script>
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts{
+    @Scripts.Render("~/bundles/jqueryval")}
+

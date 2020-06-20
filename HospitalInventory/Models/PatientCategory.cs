@@ -11,7 +11,8 @@ namespace HospitalInventory.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class PatientCategory
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -21,7 +22,12 @@ namespace HospitalInventory.Models
         }
     
         public int PatientCategoryId { get; set; }
+
+        [Required(ErrorMessage = "This Field is Required")]
         public string PatientCategoryName { get; set; }
+
+        [Required(ErrorMessage = "This Field is Required")]
+        public string EquipmentName { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Patient> Patients { get; set; }

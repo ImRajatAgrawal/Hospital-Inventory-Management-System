@@ -12,6 +12,12 @@
     }
 }
 
+<style>
+    a {
+        color: purple;
+    }
+</style>
+
 <h2>Deleting the Equipment Category</h2>
 <h3 style="color: red">WARNING!!! All the equipments associated with this category will also be deleted</h3>
 <h4>Are you sure you want to delete this Equipment Category with its equipments?</h4>
@@ -31,7 +37,15 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.EquipmentCategoryIsReusable)
+            @if (Model.EquipmentCategoryIsReusable)
+            {
+                <p>Yes</p>
+            }
+            else
+            {
+                <p>No</p>
+            }
+
         </dd>
 
         <dt>

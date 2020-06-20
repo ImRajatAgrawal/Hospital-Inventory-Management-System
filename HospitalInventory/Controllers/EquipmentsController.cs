@@ -2,11 +2,15 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using HospitalInventory.Models;
+using HospitalInventory.Controllers;
+using System.Net.Mail;
+using System.Text;
 
 namespace HospitalInventory.Controllers
 {
@@ -53,6 +57,122 @@ namespace HospitalInventory.Controllers
             }
         }
 
+        //SEND MAIL
+        public void sendemail(Dictionary<string, KeyValuePair<int, int>> orders)
+        {
+            string Body =
+                   "<!DOCTYPE html>" +
+                   "<html>" +
+                   "<head>" +
+                   "<style>" +
+                   "table, th, td {  border: 1px solid black;}" +
+                   "</style>" +
+                   "</head>" +
+                   "<body>" +
+                   "<p>The following equipments should be ordered as their " +
+                   "current quantity is below threshold value</p>" +
+                   "<h2>Equipments to be ordered are:</h2>" +
+                   "<table>" +
+                   "<tr>" +
+                   "<th>Equipment Name</th>" +
+                   "<th>Current Quantity</th>" +
+                   "<th>Threshold Quantity</th>" +
+                   "</tr>";
+
+            foreach (var item in orders)
+            {
+                Body += "<tr>" +
+                        "<td>" + item.Key + "</td>" +
+                        "<td>" + item.Value.Key + "</td>" +
+                        "<td>" + item.Value.Value + "</td>" +
+                       "</tr>";
+            }
+
+            Body +=
+            "</table>" +
+            "</body>" +
+            "</html>";
+
+            MailMessage mail = new MailMessage();
+            mail.To.Add("novaisking7@gmail.com");
+            mail.From = new MailAddress("novaisking7@gmail.com");
+            mail.Subject = "EQUIPMENTS BELOW THRESHOLD VALUE ALERT";
+            mail.Body = Body;
+            mail.BodyEncoding = Encoding.UTF8;
+            mail.IsBodyHtml = true;
+
+            SmtpClient smtp = new SmtpClient();
+            smtp.Host = "smtp.gmail.com";
+            smtp.Port = 587;
+            smtp.UseDefaultCredentials = false;
+            smtp.Credentials = new System.Net.NetworkCredential("novaisking7@gmail.com", "Hello@world123"); // Enter senders User name and password  
+            smtp.EnableSsl = true;
+            smtp.Send(mail);
+        }
+        
+        //SEND MAIL FUNCTION TO call sendemail
+        public void SendMailFunction(Equipment equipment)
+        {
+            try
+            {
+                var totalVentilators = db.Equipments.Where(x => x.EquipmentName.Contains("Ventilator") && x.PatientId == null).Count();
+                var totalbedsbyGW = db.Equipments.Where(x => x.EquipmentName.Contains("bed") && x.EquipmentCategoryId == 4 && x.PatientId == null).Count();
+                var totalbedsbyICU = db.Equipments.Where(x => x.EquipmentName.Contains("bed") && x.EquipmentCategoryId == 5 && x.PatientId == null).Count();
+                var totalAlcoholicsanitizers = db.Equipments.Where(x => x.EquipmentName.Contains("Alcoholic Sanitizer")).Select(x => x.EquipmentTotalQuantity).FirstOrDefault();
+                var totalNonalcoholicsanitizers = db.Equipments.Where(x => x.EquipmentName.Contains("Non-Alcoholic Sanitizer")).Select(x => x.EquipmentTotalQuantity).FirstOrDefault();
+                var totalSymtomaticmedicines = db.Equipments.Where(x => x.EquipmentName.Contains("Symptomatic")).Select(x => x.EquipmentTotalQuantity).FirstOrDefault();
+                var totalAsymtomaticmedicines = db.Equipments.Where(x => x.EquipmentName.Contains("Asymptomatic")).Select(x => x.EquipmentTotalQuantity).FirstOrDefault();
+                var totalN95Mask = db.Equipments.Where(x => x.EquipmentName.Contains("N-95")).Select(x => x.EquipmentTotalQuantity).FirstOrDefault();
+                var totalsurgicalmask = db.Equipments.Where(x => x.EquipmentName.Contains("Surgical")).Select(x => x.EquipmentTotalQuantity).FirstOrDefault();
+
+                var rows = db.EquipmentCategories.ToList();
+
+                Dictionary<string, int> equipmentthreshold = new Dictionary<string, int>();
+
+                foreach (var row in rows)
+                {
+                    equipmentthreshold.Add(row.EquipmentCategoryName, row.EquipmentCategoryThreshold);
+                }
+
+                Dictionary<string, KeyValuePair<int, int>> orders = new Dictionary<string, KeyValuePair<int, int>>();
+
+                if (totalAlcoholicsanitizers < equipmentthreshold["Sanitizer"])
+                    orders.Add("Alcoholic Sanitizer", new KeyValuePair<int, int>(totalAlcoholicsanitizers, equipmentthreshold["Sanitizer"]));
+
+                if (totalNonalcoholicsanitizers < equipmentthreshold["Sanitizer"])
+                    orders.Add("Non-Alcoholic Sanitizer", new KeyValuePair<int, int>(totalNonalcoholicsanitizers, equipmentthreshold["Sanitizer"]));
+
+                if (totalsurgicalmask < equipmentthreshold["Mask"])
+                    orders.Add("Surgical Mask", new KeyValuePair<int, int>(totalsurgicalmask, equipmentthreshold["Mask"]));
+
+                if (totalN95Mask < equipmentthreshold["Mask"])
+                    orders.Add("N-95 Mask", new KeyValuePair<int, int>(totalN95Mask, equipmentthreshold["Mask"]));
+
+                if (totalbedsbyGW < equipmentthreshold["General Ward Bed"])
+                    orders.Add("General Ward Bed", new KeyValuePair<int, int>(totalbedsbyGW, equipmentthreshold["General Ward Bed"]));
+
+                if (totalbedsbyICU < equipmentthreshold["ICU Ward Bed"])
+                    orders.Add("ICU Ward Bed", new KeyValuePair<int, int>(totalbedsbyICU, equipmentthreshold["ICU Ward Bed"]));
+
+                if (totalSymtomaticmedicines < equipmentthreshold["Malarial Medicine"])
+                    orders.Add("Malarial Medicine", new KeyValuePair<int, int>(totalSymtomaticmedicines, equipmentthreshold["Malarial Medicine"]));
+
+                if (totalAsymtomaticmedicines < equipmentthreshold["Paracetemol Medicine"])
+                    orders.Add("Paracetemol Medicine", new KeyValuePair<int, int>(totalAsymtomaticmedicines, equipmentthreshold["Paracetemol Medicine"]));
+
+                if (totalVentilators < equipmentthreshold["Ventilator"])
+                    orders.Add("Ventilator", new KeyValuePair<int, int>(totalVentilators, equipmentthreshold["Ventilator"]));
+
+                if (orders.Count() > 0)
+                    sendemail(orders);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Error in sending mail");
+                Debug.WriteLine(e.Message.ToString());
+            }
+        }
+
         // GET: Equipments/Details/5
         public ActionResult Details(int? id)
         {
@@ -67,9 +187,9 @@ namespace HospitalInventory.Controllers
             }
             return View(equipment);
         }
-        
+
         // GET: Equipments/Create
-        
+
         public ActionResult Create()
         {
             ViewBag.EquipmentCategoryId = new SelectList(db.EquipmentCategories, "EquipmentCategoryId", "EquipmentCategoryName");
@@ -81,9 +201,9 @@ namespace HospitalInventory.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "EquipmentId,EquipmentName,EquipmentCategoryId,EquipmentTotalQuantity,EquipmentInUseCount,EquipmentSellerName,PatientId")] Equipment equipment)
         {
-           
+
             //CHECK if the equipment name already exists
-            string EquipmentNameCheck = ""; 
+            string EquipmentNameCheck = "";
             EquipmentNameCheck = db.Equipments.Where(x => x.EquipmentName.Equals(equipment.EquipmentName)).Select(x => x.EquipmentName).SingleOrDefault();
             if (EquipmentNameCheck == null)
             {
@@ -91,6 +211,7 @@ namespace HospitalInventory.Controllers
                 {
                     ViewBag.message = null;
                     db.Equipments.Add(equipment);
+                    SendMailFunction(equipment);
                     db.SaveChanges();
                     return RedirectToAction("Index");
                 }
@@ -130,6 +251,7 @@ namespace HospitalInventory.Controllers
             {
                 db.Entry(equipment).State = EntityState.Modified;
                 db.SaveChanges();
+                SendMailFunction(equipment);
                 return RedirectToAction("Index");
             }
             ViewBag.EquipmentCategoryId = new SelectList(db.EquipmentCategories, "EquipmentCategoryId", "EquipmentCategoryName", equipment.EquipmentCategoryId);
