@@ -15,6 +15,7 @@
           <Property Name="password" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="emailAddress" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="designationId" Type="int" Nullable="false" />
+          <Property Name="resetPasswordCode" Type="varchar(max)" />
         </EntityType>
         <EntityType Name="EmployeeDesignation">
           <Key>
@@ -189,6 +190,7 @@
           <Property Name="designationId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="EmployeeDesignation" Relationship="Self.FK_Employee_EmployeeDesignation" FromRole="Employee" ToRole="EmployeeDesignation" />
           <NavigationProperty Name="Patients" Relationship="HospitalInventoryModel.FK_Patient_Employee" FromRole="Employee" ToRole="Patient" />
+          <Property Name="resetPasswordCode" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="EmployeeDesignation">
           <Key>
@@ -366,6 +368,7 @@
           <EntitySetMapping Name="Employees">
             <EntityTypeMapping TypeName="HospitalInventoryModel.Employee">
               <MappingFragment StoreEntitySet="Employee">
+                <ScalarProperty Name="resetPasswordCode" ColumnName="resetPasswordCode" />
                 <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
                 <ScalarProperty Name="employeeName" ColumnName="employeeName" />
                 <ScalarProperty Name="userName" ColumnName="userName" />

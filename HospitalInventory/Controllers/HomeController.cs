@@ -123,7 +123,7 @@ namespace HospitalInventory.Controllers
                     emp.designationId = id;
                     db.Employees.Add(emp);
                     db.SaveChanges();
-                    ViewBag.Message = "User Created Successfully!!";
+                    TempData["msg"] = "<script>alert('User Created Successfully!!');</script>";
                     string mailbody = "<!DOCTYPE html>" +
                    "<html>" +
                    "<body>" +
@@ -144,10 +144,10 @@ namespace HospitalInventory.Controllers
             }
             catch(Exception e)
             {
-                ViewBag.Message = "User Creation Failed";
+                TempData["msg"] = "<script>alert('User Creation Failed!!');</script>";
                 Debug.WriteLine(e.Message);
             }
-                return View();
+            return RedirectToAction("Admin","Home");
         }
         public ActionResult Staff()
         {

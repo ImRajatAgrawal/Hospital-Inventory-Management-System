@@ -16,7 +16,7 @@
 }
 <h2>@ViewBag.Title</h2>
 <br>
-<h3 class="text-success">@ViewBag.Message</h3>
+@Html.Raw(TempData["msg"])
 @using (Html.BeginForm("Admin", "Home", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
 
@@ -52,7 +52,7 @@
     <div class="form-group">
         @Html.LabelFor(m => m.empDesignation, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
-            @Html.DropDownListFor(model => model.empDesignation, ViewBag.data as SelectList,"Select Designation" , new { htmlAttributes = new { @class = "form-control" } })
+            @Html.DropDownListFor(model => model.empDesignation, ViewBag.data as SelectList, "Select Designation", new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.empDesignation)
         </div>
     </div>

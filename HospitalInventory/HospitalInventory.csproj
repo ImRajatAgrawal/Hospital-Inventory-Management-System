@@ -173,6 +173,7 @@
     <Compile Include="Models\PatientCategory.cs">
       <DependentUpon>InventoryDb.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ResetPasswordModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -235,6 +236,8 @@
     <Content Include="Views\Login\ChangePassword.cshtml" />
     <Content Include="Views\EquipmentCheckout\Index.cshtml" />
     <Content Include="Views\Shared\DisplayEquipments.cshtml" />
+    <Content Include="Views\Login\ForgotPassword.cshtml" />
+    <Content Include="Views\Login\ResetPassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

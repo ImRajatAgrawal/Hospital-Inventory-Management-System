@@ -1,6 +1,14 @@
 ﻿@model HospitalInventory.Models.EquipmentModel
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Equipment Checkout";
+    if (Session["userID"] == null)
+    {
+        Response.Redirect("~/Login/LoginPage");
+    }
+    else if (Session["userRole"].Equals("Staff"))
+    {
+        Response.Redirect("~/Home/ErrorPage");
+    }
 }
 
 <h2>Equipments Checkout</h2>
