@@ -1,10 +1,6 @@
 ﻿@model HospitalInventory.Models.EquipmentModel
 @{
-    ViewBag.Title = "Index";
-}
-
-@{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Equipment Checkout";
     if (Session["userID"] == null)
     {
         Response.Redirect("~/Login/LoginPage");
@@ -15,10 +11,7 @@
     }
 }
 
-<script src="https://code.jquery.com/jquery-1.7.1.min.js"></script>
-
-<div class="jumbotron" style="font-size: large">Equipments Checkout</div>
-
+<h2>Equipments Checkout</h2>
 @Html.Raw(TempData["msg"])
 @using (Html.BeginForm("Withdraw", "EquipmentCheckout", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
@@ -54,7 +47,6 @@
         </div>
     </div>
 }
-
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script src="~/Scripts/jquery-3.4.1.min.js"></script>
@@ -75,6 +67,5 @@
                 })
             })
         })
-
     </script>
 }

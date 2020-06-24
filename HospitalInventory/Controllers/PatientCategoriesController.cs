@@ -46,7 +46,6 @@ namespace HospitalInventory.Controllers
             return View();
         }
 
-
         public JsonResult GetEquipment(string searchTerm)
         {
             var Equipment = db.Equipments.ToList();
@@ -103,11 +102,8 @@ namespace HospitalInventory.Controllers
             {
                 throw ex;
             }
-
-
             return RedirectToAction("Create");
         }
-
 
         // POST: PatientCategories/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
@@ -183,6 +179,13 @@ namespace HospitalInventory.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
+
+        //ADMIT PATIENT IN HOSPITAL
+        public ActionResult AdmitPatient()
+        {
+            return View();
+        }
+
 
         protected override void Dispose(bool disposing)
         {

@@ -9,11 +9,11 @@ using System.Web;
 using System.Web.Mvc;
 using HospitalInventory.Controllers;
 
-
 namespace HospitalInventory.Controllers
 {
     public class HomeController : Controller
     {
+        HospitalInventoryEntities db = new HospitalInventoryEntities();
         public ActionResult Index()
         {
             HospitalInventoryEntities db = new HospitalInventoryEntities();
@@ -94,11 +94,81 @@ namespace HospitalInventory.Controllers
             ViewBag.patientintake = patientintake;
             return View();
         }
+
+        [HttpGet]
         public ActionResult Admin()
         {
-            ViewBag.Message = "Admin Page";
+            using (db)
+            {
+                var designations = db.EmployeeDesignations.ToList();
+                SelectList lst = new SelectList(designations, "designationName", "designationName");
+                ViewBag.data = lst;
+            }
             return View();
         }
+
+        [HttpPost]
+        public ActionResult Admin(CreateUser user)
+        {
+            try
+            {
+                using (db)
+                {
+                    Employee emp = new Employee();
+                    emp.employeeName = user.employeeName;
+                    emp.userName = user.userName;
+                    emp.emailAddress = user.emailId;
+                    emp.password = user.password;
+                    var id = db.EmployeeDesignations.Where(x => x.designationName.Equals(user.empDesignation)).Select(x => x.designationId).SingleOrDefault();
+                    emp.designationId = id;
+                    db.Employees.Add(emp);
+                    db.SaveChanges();
+                    TempData["msg"] = "<script>alert('User created successfully!!'); </script>"; 
+                    string mailbody = "<!DOCTYPE html>" +
+                   "<html>" +
+                   "<body>" +
+                   "<p>Hello <b>" + user.employeeName + "</b>," + "</p>" +
+                   "<p>" + "you have been registered as a <b>" + user.empDesignation.ToString() + "</b> user in the hospital Inventory</p>" +
+                   "<p>" + "please find below the login credentials, " + "</p>" +
+                   "<p>" + "<b>User Name : </b>" + user.userName + "</p>" +
+                   "<p>" + "<b>Password : </b>" + user.password + "</p>" +
+                   "<p>" + "Login Here - " + "<a href=" + "https://localhost:44306/" + Url.Action("LoginPage", "Login") + ">" + "login" + "</a>" + "</p>" +
+                   "<h5>This is a System generated Mail. Please do not reply to it.</h5>" +
+                   "</body>" +
+                    "</html>";
+                    // Debug.WriteLine(mailbody);
+
+                    mailtorecipient(mailbody, " New User Creation");
+                }
+
+            }
+            catch (Exception e)
+            {
+                TempData["msg"] = "<script>alert('User creation Failed!!'); </script>";
+                Debug.WriteLine(e.Message);
+            }
+            return RedirectToAction("Admin", "Home");
+        }
+
+        public void mailtorecipient(string Body, string subject, string recipient = "novaisking7@gmail.com")
+        {
+            MailMessage mail = new MailMessage();
+            mail.To.Add(recipient);
+            mail.From = new MailAddress("novaisking7@gmail.com");
+            mail.Subject = subject;
+            mail.Body = Body;
+            mail.BodyEncoding = Encoding.UTF8;
+            mail.IsBodyHtml = true;
+
+            SmtpClient smtp = new SmtpClient();
+            smtp.Host = "smtp.gmail.com";
+            smtp.Port = 587;
+            smtp.UseDefaultCredentials = false;
+            smtp.Credentials = new System.Net.NetworkCredential("novaisking7@gmail.com", "Hello@world123"); // Enter seders User name and password  
+            smtp.EnableSsl = true;
+            smtp.Send(mail);
+        }
+
         public ActionResult Staff()
         {
             return View();

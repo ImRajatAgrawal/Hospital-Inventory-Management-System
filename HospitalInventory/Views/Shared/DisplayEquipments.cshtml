@@ -1,17 +1,5 @@
 ﻿@model IEnumerable<HospitalInventory.Models.Equipment>
 
-@{
-    ViewBag.Title = "DisplayEquipments";
-    if (Session["userID"] == null)
-    {
-        Response.Redirect("~/Login/LoginPage");
-    }
-    else if (Session["userRole"].Equals("Staff"))
-    {
-        Response.Redirect("~/Home/ErrorPage");
-    }
-}
-
 <option value="">-- Select Equipment --</option>
 
 @if (ViewBag.EquipmentList != null)

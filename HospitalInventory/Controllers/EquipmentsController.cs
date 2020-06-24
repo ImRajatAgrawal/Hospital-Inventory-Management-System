@@ -189,7 +189,6 @@ namespace HospitalInventory.Controllers
         }
 
         // GET: Equipments/Create
-
         public ActionResult Create()
         {
             ViewBag.EquipmentCategoryId = new SelectList(db.EquipmentCategories, "EquipmentCategoryId", "EquipmentCategoryName");

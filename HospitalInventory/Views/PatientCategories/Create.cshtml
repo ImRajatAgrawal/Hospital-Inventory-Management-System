@@ -6,10 +6,7 @@
     {
         Response.Redirect("~/Login/LoginPage");
     }
-    else if (Session["userRole"].Equals("Staff"))
-    {
-        Response.Redirect("~/Home/ErrorPage");
-    }
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <link href="~/Content/css/select2.min.css" rel="stylesheet" />
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>

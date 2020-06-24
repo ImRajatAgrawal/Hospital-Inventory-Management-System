@@ -43,10 +43,13 @@ namespace HospitalInventory.Controllers
                 {
                     equipments.EquipmentTotalQuantity = equipments.EquipmentTotalQuantity - equipment.quantity;
                     db.SaveChanges();
+
                     TempData["msg"] = "<script>alert('Withdraw Successfull');</script>";
+
                 }
                 else
                 {
+
                     TempData["msg"] = "<script>alert('Withdraw Unsuccessfull. Not Enough Quantity');</script>";
                 }
             }

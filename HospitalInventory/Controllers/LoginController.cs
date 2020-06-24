@@ -67,9 +67,7 @@ namespace HospitalInventory.Controllers
                     Session.Timeout = 60;
                     return RedirectToAction("Index", "Home");
                 }
-
             }
-
         }
         public ActionResult Logout()
         {
@@ -99,6 +97,12 @@ namespace HospitalInventory.Controllers
                     ViewBag.Message = "Password changed successfully!!";
                     userDetail.password = cpm.ConfirmPassword;
                     db.SaveChanges();
+                    HttpCookie cookie = Request.Cookies.Get("Employee");
+                    if (cookie != null)
+                    {
+                        cookie.Expires = DateTime.Now.AddDays(-1);
+                        HttpContext.Response.Cookies.Add(cookie);
+                    }
                     return View("ChangePassword", cpm);
                 }
             }

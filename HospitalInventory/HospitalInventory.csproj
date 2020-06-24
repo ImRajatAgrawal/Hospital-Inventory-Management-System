@@ -138,6 +138,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\ChangePassword.cs" />
+    <Compile Include="Models\CreateUser.cs" />
     <Compile Include="Models\Employee.cs">
       <DependentUpon>InventoryDb.tt</DependentUpon>
     </Compile>
@@ -314,7 +315,8 @@
     <Content Include="Views\PatientCategories\Details.cshtml" />
     <Content Include="Views\PatientCategories\Edit.cshtml" />
     <Content Include="Views\PatientCategories\Index.cshtml" />
-    <Content Include="Views\EquipmentCheckout\DisplayEquipments.cshtml" />
+    <Content Include="Views\Shared\DisplayEquipments.cshtml" />
+    <Content Include="Views\PatientCategories\AdmitPatient.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
