@@ -180,13 +180,6 @@ namespace HospitalInventory.Controllers
             return RedirectToAction("Index");
         }
 
-        //ADMIT PATIENT IN HOSPITAL
-        public ActionResult AdmitPatient()
-        {
-            return View();
-        }
-
-
         protected override void Dispose(bool disposing)
         {
             if (disposing)

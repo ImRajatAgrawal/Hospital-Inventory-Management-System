@@ -139,14 +139,7 @@
                         @Html.DisplayFor(modelItem => item.EquipmentTotalQuantity)
                     </td>
                     <td style="color: @fontColor">
-                        @if (item.PatientId != null)
-                        {
-                            <p>1</p>
-                        }
-                        else
-                        {
-                            <p>0</p>
-                        }
+                        @Html.DisplayFor(modelItem => item.EquipmentInUseCount)
                     </td>
                     <td style="color: @fontColor">
                         @Html.DisplayFor(modelItem => item.EquipmentCategory.EquipmentCategoryName)

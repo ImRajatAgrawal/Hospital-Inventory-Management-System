@@ -134,6 +134,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\PatientCategoriesController.cs" />
+    <Compile Include="Controllers\PatientsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -316,7 +317,11 @@
     <Content Include="Views\PatientCategories\Edit.cshtml" />
     <Content Include="Views\PatientCategories\Index.cshtml" />
     <Content Include="Views\Shared\DisplayEquipments.cshtml" />
-    <Content Include="Views\PatientCategories\AdmitPatient.cshtml" />
+    <Content Include="Views\Patients\Create.cshtml" />
+    <Content Include="Views\Patients\Delete.cshtml" />
+    <Content Include="Views\Patients\Details.cshtml" />
+    <Content Include="Views\Patients\Edit.cshtml" />
+    <Content Include="Views\Patients\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

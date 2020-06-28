@@ -4,7 +4,7 @@
     {
         Response.Redirect("~/Login/LoginPage");
     }
-
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -50,11 +50,11 @@
 </style>
 <body>
     <br />
-    <br />
-    <br />
-    <br />
 
     <a href="@Url.Action("Create", "PatientCategories")" style="font-size:large">
         <p class="button"><span>Manage equipments for Patient Categories</span></p>
+    </a>
+    <a href="@Url.Action("Index", "Patients")" style="font-size:large">
+        <p class="button"><span>Manage Patients</span></p>
     </a>
 </body>

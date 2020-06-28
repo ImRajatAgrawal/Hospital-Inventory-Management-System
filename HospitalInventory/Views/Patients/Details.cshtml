@@ -1,0 +1,67 @@
+﻿@model HospitalInventory.Models.Patient
+
+@{
+    ViewBag.Title = "Details";
+    if (Session["userID"] == null)
+    {
+        Response.Redirect("~/Login/LoginPage");
+    }
+}
+
+<style>
+    a {
+        color: purple;
+    }
+</style>
+
+<h2>Details of Patient</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            <p>Patient Id</p>
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PatientId)
+        </dd>
+
+        <dt>
+            <p>Patient Category</p>
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PatientCategory.PatientCategoryName)
+        </dd>
+
+        <dt>
+            <p>Hospital Staff Name</p>
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Employee.employeeName)
+        </dd>
+
+        <dt>
+            <p>Bed Id</p>
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BedId)
+        </dd>
+
+        <dt>
+            <p>Bed Category</p>
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BedCategory)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.PatientId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

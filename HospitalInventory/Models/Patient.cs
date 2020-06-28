@@ -11,7 +11,8 @@ namespace HospitalInventory.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class Patient
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -19,10 +20,13 @@ namespace HospitalInventory.Models
         {
             this.Equipments = new HashSet<Equipment>();
         }
-    
+        
         public int PatientId { get; set; }
+        
         public int PatientCategoryId { get; set; }
         public int EmployeeId { get; set; }
+        public string BedId { get; set; }
+        public string BedCategory { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Equipment> Equipments { get; set; }

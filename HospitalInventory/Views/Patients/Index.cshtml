@@ -1,0 +1,57 @@
+﻿@model IEnumerable<HospitalInventory.Models.Patient>
+
+@{
+    ViewBag.Title = "Index";
+    if (Session["userID"] == null)
+    {
+        Response.Redirect("~/Login/LoginPage");
+    }
+}
+<style>
+    a {
+        color: purple;
+    }
+</style>
+<h2 class="text-center" style="font-family: 'Copperplate Gothic'; font-size: x-large">Patient List</h2>
+<div class="panel-heading">
+    <a style="float:left; font-size:medium" href="@Url.Action("Create", "Patients")">Add New Patient</a>
+</div>
+<br />
+<br />
+<table class="table" border="1" style="border:solid; border-color:gold">
+    <tr>
+        <th style="text-align: center">
+            Patient Id
+        </th>
+        <th style="text-align: center">
+            Patient Category
+        </th>
+        <th style="text-align: center">
+            Hospital Staff Name
+        </th>
+        <th style="text-align: center">
+            Operations
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr style="text-align: center">
+            <td>
+                @Html.DisplayFor(modelItem => item.PatientId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PatientCategory.PatientCategoryName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Employee.employeeName)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.PatientId }) |
+                @Html.ActionLink("Details", "Details", new { id = item.PatientId }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.PatientId })
+            </td>
+        </tr>
+    }
+
+</table>

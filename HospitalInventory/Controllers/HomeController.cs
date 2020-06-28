@@ -75,7 +75,6 @@ namespace HospitalInventory.Controllers
             equipmentcount.Add("ICU Ward Bed", totalbedsbyICU);
             equipmentcount.Add("General Ward Bed", totalbedsbyGW);
 
-
             var rows = db.PatientCategories.ToList();
 
             Dictionary<string, int> patientintake = new Dictionary<string, int>();
@@ -135,7 +134,7 @@ namespace HospitalInventory.Controllers
                    "<p>" + "Login Here - " + "<a href=" + "https://localhost:44306/" + Url.Action("LoginPage", "Login") + ">" + "login" + "</a>" + "</p>" +
                    "<h5>This is a System generated Mail. Please do not reply to it.</h5>" +
                    "</body>" +
-                    "</html>";
+                   "</html>";
                     // Debug.WriteLine(mailbody);
 
                     mailtorecipient(mailbody, " New User Creation");
