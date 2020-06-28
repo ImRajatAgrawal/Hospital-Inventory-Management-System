@@ -4,15 +4,16 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using HospitalInventory.Models;
+using MoreLinq;
 
 namespace HospitalInventory.Controllers
 {
     public class PatientCategoriesController : Controller
     {
         private HospitalInventoryEntities db = new HospitalInventoryEntities();
+        private static List<EquipmentData> EquipmentList = new List<EquipmentData>();
 
         // GET: PatientCategories
         public ActionResult Index()
@@ -46,20 +47,39 @@ namespace HospitalInventory.Controllers
             return View();
         }
 
+        public struct EquipmentData
+        {
+            public EquipmentData(int intValue, string strValue)
+            {
+                equipId = intValue;
+                equipName = strValue;
+            }
+            public int equipId { get; private set; }
+            public string equipName { get; private set; }
+        }
+
         public JsonResult GetEquipment(string searchTerm)
         {
             var Equipment = db.Equipments.ToList();
-
             if (searchTerm != null)
             {
-                Equipment = db.Equipments.Where(x => (x.EquipmentCategory.EquipmentCategoryIsReusable.Equals(1) && x.EquipmentCategory.EquipmentCategoryName.Contains(searchTerm))
-                                  || (x.EquipmentCategory.EquipmentCategoryIsReusable.Equals(0) && x.EquipmentName.Contains(searchTerm))).ToList();
+                foreach (var equipment in Equipment)
+                {
+                    if (equipment.EquipmentCategory.EquipmentCategoryIsReusable)
+                    {
+                        EquipmentList.Add(new EquipmentData(equipment.EquipmentId, equipment.EquipmentCategory.EquipmentCategoryName));
+                    }
+                    else
+                    {
+                        EquipmentList.Add(new EquipmentData(equipment.EquipmentId, equipment.EquipmentName));
+                    }
+                }
             }
-
-            var modifiedequipent = Equipment.Select(x => new
+            EquipmentList = EquipmentList.DistinctBy(x => x.equipName).ToList();
+            var modifiedequipent = EquipmentList.Select(x => new
             {
-                id = x.EquipmentId,
-                text = x.EquipmentName
+                id = x.equipId,
+                text = x.equipName
             });
             return Json(modifiedequipent, JsonRequestBehavior.AllowGet);
         }
@@ -69,18 +89,13 @@ namespace HospitalInventory.Controllers
             List<int> EquipmentIdList = new List<int>();
             EquipmentIdList = EquipmentIds.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToList();
 
-            // List<Equipment> EquipmentNameList = new List<Equipment>();
             List<string> EquipmentNameList = new List<string>();
             foreach (int Equipmentid in EquipmentIdList)
             {
-                db.Configuration.ProxyCreationEnabled = false;
-                var equipmentList = db.Equipments.Where(x => x.EquipmentId == Equipmentid).ToList();
-                foreach (var item in equipmentList)
-                {
-                    EquipmentNameList.Add(item.EquipmentName);
-                }
+                EquipmentNameList.Add(EquipmentList.Where(x => x.equipId.Equals(Equipmentid)).Select(x => x.equipName).SingleOrDefault());
             }
             var names = String.Join(",", EquipmentNameList);
+
             ViewData["eqplist"] = names;
 
             return Json(names, JsonRequestBehavior.AllowGet);
@@ -91,10 +106,8 @@ namespace HospitalInventory.Controllers
             try
             {
                 PatientCategory pc = new PatientCategory();
-
                 pc.EquipmentName = eqplist;
                 pc.PatientCategoryName = model.PatientCategoryName;
-
                 db.PatientCategories.Add(pc);
                 db.SaveChanges();
             }
@@ -118,8 +131,6 @@ namespace HospitalInventory.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-
-
             return View(patientCategory);
         }
 
