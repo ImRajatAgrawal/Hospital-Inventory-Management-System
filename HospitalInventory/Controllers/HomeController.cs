@@ -149,11 +149,11 @@ namespace HospitalInventory.Controllers
             return RedirectToAction("Admin", "Home");
         }
 
-        public void mailtorecipient(string Body, string subject, string recipient = "novaisking7@gmail.com")
+        public void mailtorecipient(string Body, string subject, string recipient = "your_email")
         {
             MailMessage mail = new MailMessage();
             mail.To.Add(recipient);
-            mail.From = new MailAddress("novaisking7@gmail.com");
+            mail.From = new MailAddress("your_email");
             mail.Subject = subject;
             mail.Body = Body;
             mail.BodyEncoding = Encoding.UTF8;
@@ -163,7 +163,7 @@ namespace HospitalInventory.Controllers
             smtp.Host = "smtp.gmail.com";
             smtp.Port = 587;
             smtp.UseDefaultCredentials = false;
-            smtp.Credentials = new System.Net.NetworkCredential("novaisking7@gmail.com", "Hello@world123"); // Enter seders User name and password  
+            smtp.Credentials = new System.Net.NetworkCredential("your_email", "your_Password"); // Enter seders User name and password  
             smtp.EnableSsl = true;
             smtp.Send(mail);
         }
