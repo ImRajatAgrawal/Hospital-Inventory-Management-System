@@ -20,7 +20,7 @@ namespace HospitalInventory.Models
         {
             this.Patients = new HashSet<Patient>();
         }
-    
+
         public int PatientCategoryId { get; set; }
 
         [Required(ErrorMessage = "This Field is Required")]
@@ -28,7 +28,7 @@ namespace HospitalInventory.Models
 
         [Required(ErrorMessage = "This Field is Required")]
         public string EquipmentName { get; set; }
-    
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Patient> Patients { get; set; }
     }

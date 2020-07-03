@@ -102,10 +102,10 @@ namespace HospitalInventory.Controllers
                 var designations = db.EmployeeDesignations.ToList();
                 SelectList lst = new SelectList(designations, "designationName", "designationName");
                 ViewBag.data = lst;
+
             }
             return View();
         }
-
         [HttpPost]
         public ActionResult Admin(CreateUser user)
         {
@@ -122,7 +122,7 @@ namespace HospitalInventory.Controllers
                     emp.designationId = id;
                     db.Employees.Add(emp);
                     db.SaveChanges();
-                    TempData["msg"] = "<script>alert('User created successfully!!'); </script>"; 
+                    TempData["msg"] = "<script>alert('User Created Successfully!!');</script>";
                     string mailbody = "<!DOCTYPE html>" +
                    "<html>" +
                    "<body>" +
@@ -134,26 +134,25 @@ namespace HospitalInventory.Controllers
                    "<p>" + "Login Here - " + "<a href=" + "https://localhost:44306/" + Url.Action("LoginPage", "Login") + ">" + "login" + "</a>" + "</p>" +
                    "<h5>This is a System generated Mail. Please do not reply to it.</h5>" +
                    "</body>" +
-                   "</html>";
+                    "</html>";
                     // Debug.WriteLine(mailbody);
-
                     mailtorecipient(mailbody, " New User Creation");
                 }
 
             }
             catch (Exception e)
             {
-                TempData["msg"] = "<script>alert('User creation Failed!!'); </script>";
+                TempData["msg"] = "<script>alert('User Creation Failed!!');</script>";
                 Debug.WriteLine(e.Message);
             }
             return RedirectToAction("Admin", "Home");
         }
 
-        public void mailtorecipient(string Body, string subject, string recipient = "your_email")
+        public void mailtorecipient(string Body, string subject, string recipient = "novaisking7@gmail.com")
         {
             MailMessage mail = new MailMessage();
             mail.To.Add(recipient);
-            mail.From = new MailAddress("your_email");
+            mail.From = new MailAddress("novaisking7@gmail.com");
             mail.Subject = subject;
             mail.Body = Body;
             mail.BodyEncoding = Encoding.UTF8;
@@ -163,7 +162,7 @@ namespace HospitalInventory.Controllers
             smtp.Host = "smtp.gmail.com";
             smtp.Port = 587;
             smtp.UseDefaultCredentials = false;
-            smtp.Credentials = new System.Net.NetworkCredential("your_email", "your_Password"); // Enter seders User name and password  
+            smtp.Credentials = new System.Net.NetworkCredential("novaisking7@gmail.com", "Hello@world123"); // Enter seders User name and password  
             smtp.EnableSsl = true;
             smtp.Send(mail);
         }

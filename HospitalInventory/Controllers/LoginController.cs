@@ -1,6 +1,7 @@
 ﻿using HospitalInventory.Models;
 using System;
 using System.Linq;
+using System.Net.Mail;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
@@ -9,6 +10,7 @@ namespace HospitalInventory.Controllers
 {
     public class LoginController : Controller
     {
+        HospitalInventoryEntities db = new HospitalInventoryEntities();
         // GET: Login
         [HttpGet]
         public ActionResult LoginPage()
@@ -21,7 +23,6 @@ namespace HospitalInventory.Controllers
                 string DecryptedPassword = ASCIIEncoding.ASCII.GetString(b);
                 ViewBag.username = cookie["username"];
                 ViewBag.password = DecryptedPassword;
-
             }
 
             return View();
@@ -106,6 +107,121 @@ namespace HospitalInventory.Controllers
                     return View("ChangePassword", cpm);
                 }
             }
+        }
+
+        public void mailtorecipient(string Body, string subject, string recipient = "novaisking7@gmail.com")
+        {
+            MailMessage mail = new MailMessage();
+            mail.To.Add(recipient);
+            mail.From = new MailAddress("novaisking7@gmail.com");
+            mail.Subject = subject;
+            mail.Body = Body;
+            mail.BodyEncoding = Encoding.UTF8;
+            mail.IsBodyHtml = true;
+
+            SmtpClient smtp = new SmtpClient();
+            smtp.Host = "smtp.gmail.com";
+            smtp.Port = 587;
+            smtp.UseDefaultCredentials = false;
+            smtp.Credentials = new System.Net.NetworkCredential("novaisking7@gmail.com", "Hello@world123"); // Enter seders User name and password  
+            smtp.EnableSsl = true;
+            smtp.Send(mail);
+        }
+
+        public ActionResult ForgotPassword()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult ForgotPassword(string EmailID)
+        {
+            string resetCode = Guid.NewGuid().ToString();
+            var verifyUrl = "/Login/ResetPassword/" + resetCode;
+            var link = Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, verifyUrl);
+            using (db)
+            {
+                var getUser = (from s in db.Employees where s.emailAddress.Equals(EmailID) select s).FirstOrDefault();
+                if (getUser != null)
+                {
+                    getUser.resetPasswordCode = resetCode;
+                    db.Configuration.ValidateOnSaveEnabled = false;
+                    db.SaveChanges();
+
+                    var subject = "Password Reset Request";
+                    var body = "Hi " + getUser.employeeName + ", <br/> You recently requested to reset your password for your account. Click the link below to reset it. " +
+
+                         " <br/><br/><a href='" + link + "'>" + link + "</a> <br/><br/>" +
+                         "If you did not request a password reset, please ignore this email or reply to let us know.<br/><br/> Thank you";
+
+                    mailtorecipient(body, subject);
+
+                    ViewBag.Message = "Reset password link has been sent to your email id.";
+                }
+                else
+                {
+                    ViewBag.Message = "User doesn't exists.";
+                    return View();
+                }
+            }
+
+            return View();
+        }
+        public ActionResult ResetPassword(string id)
+        {
+            //Verify the reset password link
+            //Find account associated with this link
+            //redirect to reset password page
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                return HttpNotFound();
+            }
+
+            using (db)
+            {
+                var user = db.Employees.Where(a => a.resetPasswordCode.Equals(id)).FirstOrDefault();
+                if (user != null)
+                {
+                    ResetPasswordModel model = new ResetPasswordModel();
+                    model.ResetCode = id;
+                    return View(model);
+                }
+                else
+                {
+                    return HttpNotFound();
+                }
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ResetPassword(ResetPasswordModel model)
+        {
+            var message = "";
+            if (ModelState.IsValid)
+            {
+                using (db)
+                {
+                    var user = db.Employees.Where(a => a.resetPasswordCode.Equals(model.ResetCode)).FirstOrDefault();
+                    if (user != null)
+                    {
+                        user.password = model.NewPassword;
+                        //make resetpasswordcode empty string now
+                        user.resetPasswordCode = null;
+                        //to avoid validation issues, disabling it
+                        db.Configuration.ValidateOnSaveEnabled = false;
+                        db.SaveChanges();
+                        message = "New password updated successfully";
+                    }
+                    else
+                        return HttpNotFound();
+                }
+            }
+            else
+            {
+                message = "Something invalid";
+            }
+            ViewBag.Message = message;
+            return View(model);
         }
     }
 }
